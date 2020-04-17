@@ -51,7 +51,7 @@ class IndexTest extends TestCase
 
         error_log('----------- RESULT (IN TEST) ---------------');
         error_log(print_r($resultHit, 1));
-        $this->assertEquals($result['hits']['total'], 0);
+        $this->assertEquals($resultHit['hits']['total'], 0);
         $index->drop();
 
     }
