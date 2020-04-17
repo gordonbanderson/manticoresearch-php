@@ -31,6 +31,10 @@ class Index
         return $search->search($input);
     }
 
+    /**
+     * @param $id
+     * @return ResultHit|mixed|null
+     */
     public function getDocumentById($id)
     {
         $params = [
@@ -42,7 +46,15 @@ class Index
             ]
         ];
         $result = new ResultSet($this->_client->search($params, true));
-        return $result->valid() ? $result->current() : null;
+
+        error_log('Get document by id');
+        error_log(print_r($result, 1));
+
+        $ret = $result->valid() ? $result->current() : null;
+
+        error_log('RESULT VALID? : ' . $result->valid());
+        error_log('***** RET: ' . print_r($ret, 1));
+        return $ret;
     }
 
     public function addDocument($data, $id = null)

@@ -45,7 +45,13 @@ class IndexTest extends TestCase
         $this->assertEquals($update['_id'], 1);
         $index->deleteDocument(1);
         $this->assertEquals($update['_id'], 1);
-        $result = $index->getDocumentById(1);
+
+        error_log('++++++++++ TRYING TO GET DELETED DOCUMENT +++++++');
+        $resultHit = $index->getDocumentById(1);
+
+        error_log('----------- RESULT (IN TEST) ---------------');
+        error_log(print_r($resultHit, 1));
+        error_log(get_class($resultHit));
         $this->assertEquals($result['hits']['total'], 0);
         $index->drop();
 
@@ -103,7 +109,7 @@ class IndexTest extends TestCase
             ->highlight()
             ->get();
 
-  
+
 
         foreach($results as $hit) {
 

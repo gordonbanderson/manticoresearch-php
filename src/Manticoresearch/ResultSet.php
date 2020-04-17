@@ -46,6 +46,9 @@ class ResultSet implements \Iterator, \Countable
         $this->_position = 0;
     }
 
+    /**
+     * @return ResultHit|mixed
+     */
     public function current()
     {
         return new ResultHit($this->_array[$this->_position]);
@@ -58,6 +61,8 @@ class ResultSet implements \Iterator, \Countable
 
     public function valid()
     {
+        error_log('POSITION: ' . $this->_position);
+        error_log('SIZE OF ARRAY: ' . count($this->_array));
         return isset($this->_array[$this->_position]);
     }
 
