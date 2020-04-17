@@ -50,9 +50,18 @@ class IndexTest extends TestCase
         $resultHit = $index->getDocumentById(1);
 
         error_log('----------- RESULT (IN TEST) ---------------');
+        error_log('Result hit is null? ' . is_null($resultHit));
         error_log(print_r($resultHit, 1));
         $this->assertEquals($resultHit['hits']['total'], 0);
         $index->drop();
+
+    }
+
+
+    public function testArrayBehaviour()
+    {
+        $rh = null;
+        $this->assertEquals($rh['hits']['total'], 0);
 
     }
 
