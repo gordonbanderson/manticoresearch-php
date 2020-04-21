@@ -109,6 +109,32 @@ class SearchTest extends TestCase
         $this->assertEquals("PHRASE( AND(fields=(title, plot), KEYWORD(wormhole, querypos=1)),  AND(fields=(title, plot), KEYWORD(in, querypos=2)),  AND(fields=(title, plot), KEYWORD(space, querypos=3)))", $profile['query']['description']);
     }
 
+    public function testLimit()
+    {
+        $search = $this->_getSearch();
+        $q = new BoolQuery();
+        $q->must(new \Manticoresearch\Query\MatchPhrase('explorers', 'title,plot'));
+        $result = $search->search($q)->get();
+        $this->assertCount(3, $result);
+
+        $result = $search->search($q)->limit(2)->get();
+        $this->assertCount(2, $result);
+    }
+
+    public function testOffSet()
+    {
+        $search = $this->_getSearch();
+        $q = new BoolQuery();
+        $q->must(new \Manticoresearch\Query\MatchPhrase('explorers', 'title,plot'));
+        $result = $search->search($q)->get();
+        $this->assertCount(3, $result);
+
+        $result = $search->search($q)->offset(1)->get();
+
+        // 3 results, offset by 1, leaves 2
+        $this->assertCount(2, $result);
+    }
+
     public function testMatchExactPhrase()
     {
         $search = $this->_getSearch();
