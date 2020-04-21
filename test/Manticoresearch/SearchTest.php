@@ -97,6 +97,18 @@ class SearchTest extends TestCase
         return $search;
     }
 
+    public function testProfile()
+    {
+        $search = $this->_getSearch();
+        $q = new BoolQuery();
+        $q->must(new \Manticoresearch\Query\MatchPhrase('wormhole in space', 'title,plot'));
+        $result = $search->search($q)->profile()->get();
+        $this->assertCount(1, $result);
+
+        $profile = $result->getProfile();
+        $this->assertEquals("PHRASE( AND(fields=(title, plot), KEYWORD(wormhole, querypos=1)),  AND(fields=(title, plot), KEYWORD(in, querypos=2)),  AND(fields=(title, plot), KEYWORD(space, querypos=3)))", $profile['query']['description']);
+    }
+
     public function testMatchExactPhrase()
     {
         $search = $this->_getSearch();
