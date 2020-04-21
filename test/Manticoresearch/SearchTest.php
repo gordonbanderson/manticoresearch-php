@@ -364,7 +364,18 @@ class SearchTest extends TestCase
 
     public function testResultHitDoesGetHighlight()
     {
-        $this->markTestSkipped('TODO - highlight check');
+        $search = $this->_getSearch();
+        $search->highlight(
+            ['plot'],
+            ['pre_tags' => '<i>','post_tags'=>'</i>']
+        );
+        $q = new BoolQuery();
+        $q->must(new \Manticoresearch\Query\MatchPhrase('deep salvage', 'title,plot'));
+        $result = $search->search($q)->get();
+        $current = $result->current();
+        $this->assertEquals(['plot' => [' Ripley is rescued by a <i>deep salvage</i> team of explorers after being']], $current->getHighlight());
+
+
     }
 
     public function testResultHitGetData()
