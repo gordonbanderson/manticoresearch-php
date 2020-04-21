@@ -137,6 +137,21 @@ class SearchTest extends TestCase
         $this->assertCount(4, $result);
     }
 
+    public function testDistanceMethod()
+    {
+        $search = $this->_getSearch();
+        $results = $search->distance([
+            'location_anchor'=>
+                ['lat'=>52.2, 'lon'=> 48.6],
+            'location_source' =>
+                ['lat', 'lon'],
+            'location_distance' => '100 km'
+        ])->get();
+
+        $this->assertCount(4, $results);
+
+    }
+
     public function testDistanceArrayParamCreationNoLocationAnchor()
     {
         $search = $this->_getSearch();
