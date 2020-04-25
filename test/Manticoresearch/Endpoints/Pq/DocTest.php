@@ -6,6 +6,7 @@ namespace Manticoresearch\Test\Endpoints\Pq;
 use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Pq\Doc;
 use Manticoresearch\Exceptions\RuntimeException;
+use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class DocTest extends \PHPUnit\Framework\TestCase
 {
@@ -22,6 +23,23 @@ class DocTest extends \PHPUnit\Framework\TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Index name is missing.');
         $response = $client->pq()->doc($params);
+    }
+
+    public function testAddDocument()
+    {
+        $helper = new PopulateHelperTest();
+        $helper->populateMoviesIndex(true);
+        $client = $helper->getClient();
+        $params = [
+            'index' => 'movies',
+            'body' => [
+                'query' => ['match'=>['*' => 'team of explorers']],
+                'advise' => ['PG-13']
+            ]
+        ];
+        $response = $client->pq()->doc($params);
+
+
     }
 
     public function testSetGetIndex()
@@ -53,7 +71,7 @@ class DocTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/json/pq/products/doc/4', $doc->getPath());
     }
 
-    public function testMethod()
+    public function testHttpMethod()
     {
         $dbq = new Doc();
         $this->assertEquals('POST', $dbq->getMethod());
