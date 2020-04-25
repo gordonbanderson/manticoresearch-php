@@ -26,6 +26,11 @@ env:
     - MS_HOST=127.0.0.1
     - MS_PORT=9308
 
+    # Cluster details
+    - MS_CLUSTER_PORT=9312
+    - MS2_HOST=127.0.0.1
+    - MS2_CLUSTER_PORT=9312
+
 before_script:
   - composer validate
 
