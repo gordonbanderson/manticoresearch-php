@@ -16,6 +16,9 @@ class ClusterTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
+
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
         $params = [
             'cluster' => 'testcluster',
             'body' => [
