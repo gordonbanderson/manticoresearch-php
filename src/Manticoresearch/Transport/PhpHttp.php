@@ -72,7 +72,15 @@ class PhpHttp extends Transport implements TransportInterface
         }
         $end = microtime(true);
         $status = $responsePSR->getStatusCode();
-        $response = new Response($responsePSR->getBody(), $status);
+        $responseString = $responsePSR->getBody();
+
+        if (isset($params['responseClass'])) {
+            $responseClass = $params['responseClass'];
+            $response = new $responseClass($responseString, $status);
+        } else {
+            $response = new Response($responseString, $status);
+        }
+
         $time = $end-$start;
         $response->setTime($time);
         $response->setTransportInfo([
