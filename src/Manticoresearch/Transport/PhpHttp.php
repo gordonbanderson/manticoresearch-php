@@ -7,6 +7,7 @@ use Http\Discovery\MessageFactoryDiscovery;
 
 use Manticoresearch\Connection;
 use Manticoresearch\Exceptions\ConnectionException;
+use Manticoresearch\Exceptions\ResponseException;
 use Manticoresearch\Request;
 use Manticoresearch\Response;
 use Manticoresearch\Transport;
@@ -102,6 +103,10 @@ class PhpHttp extends Transport implements TransportInterface
         );
         $this->_logger->debug('Response body:', $response->getResponse());
 
+        if ($response->hasError()) {
+            $this->_logger->error('Response error:', [$response->getError()]);
+            throw new ResponseException($request, $response);
+        }
         return $response;
     }
 }
