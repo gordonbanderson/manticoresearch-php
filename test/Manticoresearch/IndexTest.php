@@ -152,7 +152,6 @@ class IndexTest extends TestCase
         $index = $this->_getIndex();
         $this->_addDocument($index);
         $status = $index->status();
-        error_log(print_r($status, 1));
         $this->assertEquals(1, $status['indexed_documents']);
         $keys = array_keys($status);
 

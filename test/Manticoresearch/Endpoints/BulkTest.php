@@ -14,7 +14,6 @@ class BulkTest extends \PHPUnit\Framework\TestCase
             'port' => $_SERVER['MS_PORT'],
             'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
         ];
-        error_log(print_r($params, 1));
 
         static::$client = new Client($params);
         $params = [
