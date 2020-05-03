@@ -45,6 +45,7 @@ class Cluster
         $endpoint = new Create();
         $endpoint->setCluster($cluster);
         $endpoint->setBody($body);
+        error_log(print_r($endpoint, 1));
         $response = $this->_client->request($endpoint, $this->_params);
         return  $response->getResponse();
     }
