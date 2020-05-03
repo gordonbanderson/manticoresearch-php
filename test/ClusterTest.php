@@ -29,4 +29,19 @@ class ClusterTest extends TestCase
         ];
         $response = $client->cluster()->create($params);
     }
+
+
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
+        $params = [
+            'cluster' => 'mycluster',
+            'body' => [
+
+            ]
+        ];
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
+        $response = $client->cluster()->delete($params);
+    }
 }
