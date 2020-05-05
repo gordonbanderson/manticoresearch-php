@@ -35,15 +35,15 @@ class ClusterTest extends TestCase
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
         $params = [
-            'cluster' => 'mycluster',
+            'cluster' => 'testcluster',
             'mode' => 'raw',
             'body' => [
 
             ]
         ];
-        $helper = new PopulateHelperTest();
-        $client = $helper->getClient();
         $response = $client->cluster()->delete($params);
     }
 }
