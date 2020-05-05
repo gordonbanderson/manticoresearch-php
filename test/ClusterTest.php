@@ -26,6 +26,9 @@ class ClusterTest extends TestCase
             ]
         ];
         $response = $client->cluster()->create($params);
+
+        error_log('Created cluster testcluster');
+        error_log(print_r($response, 1));
     }
 
     public function testAlterDropWithoutAdd()
