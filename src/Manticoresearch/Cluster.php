@@ -32,6 +32,7 @@ class Cluster
         $cluster = $params['cluster'] ?? null;
         $body = $params['body'];
         $endpoint = new Alter();
+        error_log('ALTER: CLUSTER=' . $cluster);
         $endpoint->setCluster($cluster);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
