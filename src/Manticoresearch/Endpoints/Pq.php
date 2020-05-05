@@ -3,7 +3,6 @@
 
 namespace Manticoresearch\Endpoints;
 
-
 use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Pq\DeleteByQuery;
 use Manticoresearch\Endpoints\Pq\Doc;
@@ -17,19 +16,19 @@ class Pq
     /**
      * @var Client
      */
-    protected $_client;
+    protected $client;
 
     /**
      * Pq constructor.
-     * @param $client
+     * @param Client $client
      */
     public function __construct($client)
     {
-        $this->_client = $client;
+        $this->client = $client;
     }
 
     /**
-     * @param $params
+     * @param array $params
      * @return mixed
      */
     public function doc($params)
@@ -43,12 +42,12 @@ class Pq
         $endpoint->setId($id);
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
-        $response = $this->_client->request($endpoint);
+        $response = $this->client->request($endpoint);
         return $response->getResponse();
     }
 
     /**
-     * @param $params
+     * @param array $params
      * @return mixed
      */
     public function search($params)
@@ -59,7 +58,7 @@ class Pq
         $endpoint->setIndex($index);
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
-        $response = $this->_client->request($endpoint);
+        $response = $this->client->request($endpoint);
         return $response->getResponse();
     }
 
@@ -75,7 +74,7 @@ class Pq
         $endpoint->setIndex($index);
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
-        $response = $this->_client->request($endpoint);
+        $response = $this->client->request($endpoint);
         return $response->getResponse();
     }
 }

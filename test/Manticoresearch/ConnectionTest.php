@@ -120,5 +120,4 @@ class ConnectionTest extends TestCase
         $newConnection = Connection::create('this is invalid');
         $this->assertEquals($this->connection, $newConnection);
     }
-
 }

@@ -1,7 +1,6 @@
 <?php
 namespace Manticoresearch\Test\Helper;
 
-
 use Manticoresearch\Client;
 
 class PopulateHelperTest extends \PHPUnit\Framework\TestCase
@@ -11,19 +10,23 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
 
     public function getClient()
     {
-        $params = ['host' => $_SERVER['MS_HOST'], 'port' => 9308];
+        $params = [
+            'host' => $_SERVER['MS_HOST'],
+            'port' => $_SERVER['MS_PORT'],
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+        ];
         $this->client = new Client($params);
         return $this->client;
     }
 
-    public function populateForKeywords() {
+    public function populateForKeywords()
+    {
         $this->getClient();
 
         $this->client->indices()->drop([
             'index' => 'products',
                 'body' => ['silent' => true]
-            ]
-        );
+            ]);
 
         $params = [
             'index' => 'products',
@@ -84,10 +87,10 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
     {
         return $this->client->nodes()->status();
     }
-    
+
     public function testDummy()
     {
-       $a = 1;
-       $this->assertEquals(1,$a);
+        $a = 1;
+        $this->assertEquals(1, $a);
     }
 }

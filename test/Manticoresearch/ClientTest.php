@@ -3,7 +3,6 @@
 
 namespace Manticoresearch\Test;
 
-
 use Manticoresearch\Client;
 use Manticoresearch\Connection;
 use Manticoresearch\Connection\Strategy\Random;
@@ -39,7 +38,11 @@ class ClientTest extends TestCase
 
     public function testCreationWithConnection()
     {
-        $params = ['host' => $_SERVER['MS_HOST'], 'port' => $_SERVER['MS_PORT']];
+        $params = [
+            'host' => $_SERVER['MS_HOST'],
+            'port' => $_SERVER['MS_PORT'],
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+        ];
         $connection = new Connection($params);
         $params = ['connections' => $connection];
         $client = new Client($params);

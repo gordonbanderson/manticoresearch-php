@@ -6,11 +6,15 @@ use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Indices\Create;
 use Manticoresearch\Exceptions\RuntimeException;
 
-class CreateTest  extends \PHPUnit\Framework\TestCase
+class CreateTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateTableWithOptions()
     {
-        $params = ['host' => $_SERVER['MS_HOST'], 'port' => $_SERVER['MS_PORT']];
+        $params = [
+            'host' => $_SERVER['MS_HOST'],
+            'port' => $_SERVER['MS_PORT'],
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+        ];
         $client = new Client($params);
         $params = [
             'index' => 'products',
@@ -32,12 +36,12 @@ class CreateTest  extends \PHPUnit\Framework\TestCase
             ]
         ];
         $response = $client->indices()->create($params);
-        $this->assertSame( ['total'=>0,'error'=>'','warning'=>''],$response);
+        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
         $params = [
             'index'=>'products'
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame( ['total'=>0,'error'=>'','warning'=>''],$response);
+        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
     }
 
     public function testCreateDistributed()
@@ -68,24 +72,28 @@ class CreateTest  extends \PHPUnit\Framework\TestCase
             ]
         ];
         $response = $client->indices()->create($params);
-        $this->assertSame( ['total'=>0,'error'=>'','warning'=>''],$response);
+        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
         $params = [
             'index'=>'testrtdist'
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame( ['total'=>0,'error'=>'','warning'=>''],$response);
+        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
     }
 
     public function testNoIndexDrop()
     {
-        $params = ['host' => $_SERVER['MS_HOST'], 'port' => $_SERVER['MS_PORT']];
+        $params = [
+            'host' => $_SERVER['MS_HOST'],
+            'port' => $_SERVER['MS_PORT'],
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+        ];
         $client = new Client($params);
         $params = [
             'index'=>'noindexname',
             'body' => ['silent'=>true]
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame( ['total'=>0,'error'=>'','warning'=>''],$response);
+        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
     }
 
     public function testSetGetIndex()
