@@ -21,6 +21,7 @@ class ClusterTest extends TestCase
         $client = $helper->getClient();
         $params = [
             'cluster' => 'testcluster',
+            'mode' => 'raw',
             'body' => [
  //               'path' => '/var/data/click_query/',
                 'nodes' => '127.0.0.1:9312,127.0.0.1:19312',
@@ -36,6 +37,7 @@ class ClusterTest extends TestCase
         parent::tearDownAfterClass();
         $params = [
             'cluster' => 'mycluster',
+            'mode' => 'raw',
             'body' => [
 
             ]
