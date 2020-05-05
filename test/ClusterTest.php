@@ -37,6 +37,7 @@ class ClusterTest extends TestCase
         $client = $helper->getClient();
         $params = [
             'cluster' => 'testcluster',
+            'mode' => 'raw',
             'body' => [
                 'operation' => 'drop',
                 'index' => 'nonExistentIndex'
@@ -51,6 +52,8 @@ class ClusterTest extends TestCase
         $client = $helper->getClient();
         $params = [
             'cluster' => 'testcluster',
+            'mode' => 'raw',
+
             'body' => [
                 'operation' => 'add',
                 'index' => 'newindex'
