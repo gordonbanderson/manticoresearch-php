@@ -37,10 +37,36 @@ class ClusterTest extends TestCase
             'body' => [
                 'operation' => 'drop',
                 'index' => 'nonExistentIndex'
-
             ]
         ];
         $client->cluster()->alter($params);
+    }
+
+    public function testAlterAddThenDrop()
+    {
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
+        $params = [
+            'cluster' => 'testcluster',
+            'body' => [
+                'operation' => 'add',
+                'index' => 'newindex'
+            ]
+        ];
+        $response = $client->cluster()->alter($params);
+        $this->assertEquals([], $response);
+
+        $params = [
+            'cluster' => 'testcluster',
+            'body' => [
+                'operation' => 'drop',
+                'index' => 'newindex'
+            ]
+        ];
+        $response = $client->cluster()->alter($params);
+        $this->assertEquals([], $response);
+
+
     }
 
 
