@@ -72,7 +72,7 @@ class ClusterTest extends TestCase
         ];
         $response = $client->indices()->create($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
-        
+
         $params = [
             'cluster' => 'testcluster',
             'body' => [
@@ -91,6 +91,9 @@ class ClusterTest extends TestCase
             ]
         ];
         $response = $client->cluster()->alter($params);
+        $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
+
+        $response = $client->indices()->drop(['index' => 'testrt', 'silent' => true]);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
