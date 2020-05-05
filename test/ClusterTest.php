@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Manticoresearch\Test;
-
 
 use Manticoresearch\Client;
 use Manticoresearch\Connection;
@@ -29,6 +26,21 @@ class ClusterTest extends TestCase
             ]
         ];
         $response = $client->cluster()->create($params);
+    }
+
+    public function testAlterDropWithoutAdd()
+    {
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
+        $params = [
+            'cluster' => 'testcluster',
+            'body' => [
+                'operation' => 'drop',
+                'index' => 'nonExistentIndex'
+
+            ]
+        ];
+        $client->cluster()->alter($params);
     }
 
 
