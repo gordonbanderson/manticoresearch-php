@@ -18,7 +18,6 @@ class ClusterTest extends TestCase
         $client = $helper->getClient();
         $params = [
             'cluster' => 'testcluster',
-            'mode' => 'raw',
             'body' => [
  //               'path' => '/var/data/click_query/',
                 'nodes' => '127.0.0.1:9312,127.0.0.1:19312',
@@ -42,6 +41,8 @@ class ClusterTest extends TestCase
                 'index' => 'nonExistentIndex'
             ]
         ];
+        $this->expectException(\Manticoresearch\Exceptions\ResponseException::class);
+        $this->expectExceptionMessage("unknown index 'nonExistentIndex'");
         $client->cluster()->alter($params);
     }
 
