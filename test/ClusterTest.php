@@ -50,11 +50,34 @@ class ClusterTest extends TestCase
     {
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
+
+        // create an index on one node
+        $params = [
+            'index' => 'testrt',
+            'body' => [
+                'columns' => [
+                    'title' => [
+                        'type' => 'text',
+                        'options' => ['indexed', 'stored']
+                    ],
+                    'gid' => [
+                        'type' => 'integer'
+                    ]
+                ],
+                'settings' => [
+                    'rt_mem_limit' => '256M',
+                    'min_infix_len' => '3'
+                ]
+            ]
+        ];
+        $response = $client->indices()->create($params);
+
+
         $params = [
             'cluster' => 'testcluster',
             'body' => [
                 'operation' => 'add',
-                'index' => 'newindex'
+                'index' => 'testrt'
             ]
         ];
         $response = $client->cluster()->alter($params);
@@ -64,7 +87,7 @@ class ClusterTest extends TestCase
             'cluster' => 'testcluster',
             'body' => [
                 'operation' => 'drop',
-                'index' => 'newindex'
+                'index' => 'testrt'
             ]
         ];
         $response = $client->cluster()->alter($params);
@@ -81,7 +104,6 @@ class ClusterTest extends TestCase
         $client = $helper->getClient();
         $params = [
             'cluster' => 'testcluster',
-            'mode' => 'raw',
             'body' => [
 
             ]
