@@ -128,7 +128,7 @@ class ClusterTest extends TestCase
                 'node'
             ]
         ];
-        $response = $client->cluster->join($params);
+        $response = $client->cluster()->join($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
