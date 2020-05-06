@@ -23,9 +23,14 @@ class Join extends EmulateBySql
     public function setBody($params = null)
     {
         if (isset($this->cluster)) {
+            error_log('T1');
             if (isset($params['node'])) {
+                error_log('T2');
+
                 $this->body = ['query' => "JOIN CLUSTER ".$this->cluster." AT ".$params['node']];
             } else {
+                error_log('T3');
+
                 $options =[];
                 if (isset($params['path'])) {
                     $options[] = "'".$params['path']. "' AS path";
@@ -37,12 +42,15 @@ class Join extends EmulateBySql
                     ((count($options)>0)?" ".implode(',', $options):"")];
             }
         }
+
+        error_log('T4');
+
         throw new RuntimeException('Cluster name is missing.');
     }
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCLuster()
+    public function getCluster()
     {
         return $this->cluster;
     }
