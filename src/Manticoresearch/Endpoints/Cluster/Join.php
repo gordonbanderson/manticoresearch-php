@@ -22,6 +22,8 @@ class Join extends EmulateBySql
 
     public function setBody($params = null)
     {
+        error_log('PARAMS');
+        error_log(print_r($params, 1));
         if (isset($this->cluster)) {
             error_log('T1');
             if (isset($params['node'])) {
