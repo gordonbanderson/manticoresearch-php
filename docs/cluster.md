@@ -86,7 +86,7 @@ There are 2 syntaxes for `body` :
         $params = [
             'cluster' => 'mycluster',
             'body' => [
-                'node'
+                'node' => []
             ]
         ];
         $response = $client->cluster()->join($params);
