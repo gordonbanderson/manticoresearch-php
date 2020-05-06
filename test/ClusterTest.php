@@ -73,6 +73,7 @@ class ClusterTest extends TestCase
         $response = $client->indices()->create($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
 
+        // add it to the cluster
         $params = [
             'cluster' => 'testcluster',
             'body' => [
@@ -83,6 +84,7 @@ class ClusterTest extends TestCase
         $response = $client->cluster()->alter($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
 
+        // drop the index from the cluster
         $params = [
             'cluster' => 'testcluster',
             'body' => [
@@ -93,8 +95,27 @@ class ClusterTest extends TestCase
         $response = $client->cluster()->alter($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
 
+        // drop the index from the initial node
         $response = $client->indices()->drop(['index' => 'testrt', 'silent' => true]);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
+    }
+
+
+    public function testSet()
+    {
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
+        $params = [
+            'cluster' => 'mycluster',
+            'body' => [
+                'variable'=> [
+                    'name' => 'pc.bootstrap',
+                    'value'=>'`'
+             ]
+         ]
+         ];
+         $response = $client->cluster()->set($params);
+         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
 
