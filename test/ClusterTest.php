@@ -125,7 +125,7 @@ class ClusterTest extends TestCase
         $params = [
             'cluster' => 'testcluster',
             'body' => [
-                'node'
+                'node' => []
             ]
         ];
         $response = $client->cluster()->join($params);
