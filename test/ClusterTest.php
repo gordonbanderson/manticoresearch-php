@@ -106,16 +106,30 @@ class ClusterTest extends TestCase
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
         $params = [
-            'cluster' => 'mycluster',
+            'cluster' => 'testcluster',
             'body' => [
                 'variable'=> [
                     'name' => 'pc.bootstrap',
                     'value'=>'`'
-             ]
-         ]
-         ];
-         $response = $client->cluster()->set($params);
-         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
+                ]
+            ]
+        ];
+        $response = $client->cluster()->set($params);
+        $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
+    }
+
+    public function testJoin()
+    {
+        $helper = new PopulateHelperTest();
+        $client = $helper->getClient();
+        $params = [
+            'cluster' => 'testcluster',
+            'body' => [
+                'node'
+            ]
+        ];
+        $response = $client->cluster->join($params);
+        $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
 
