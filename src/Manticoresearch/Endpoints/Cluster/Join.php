@@ -43,11 +43,12 @@ class Join extends EmulateBySql
                 $this->body = ['query' => "JOIN CLUSTER ".$this->cluster.
                     ((count($options)>0)?" ".implode(',', $options):"")];
             }
+        } else {
+            error_log('T4');
+            throw new RuntimeException('Cluster name is missing.');
         }
 
-        error_log('T4');
 
-        throw new RuntimeException('Cluster name is missing.');
     }
     /**
      * @return string
