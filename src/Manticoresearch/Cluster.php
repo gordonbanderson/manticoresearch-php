@@ -64,6 +64,7 @@ class Cluster
     public function join($params)
     {
         $cluster = $params['cluster'] ?? null;
+        error_log('JOIN: cluster=' . $cluster);
         $body = $params['body'];
         $endpoint = new Join();
         $endpoint->setCluster($cluster);
