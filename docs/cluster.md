@@ -89,7 +89,7 @@ There are 2 syntaxes for `body` :
                 'node'
             ]
         ];
-        $response = $client->cluster->join($params);
+        $response = $client->cluster()->join($params);
         
         $params = [
             'cluster' => 'mycluster',
