@@ -18,6 +18,8 @@ manticoresearch-php
 [![GitHub Activity](https://img.shields.io/github/commit-activity/m/manticoresoftware/manticoresearch-php)](https://github.com/manticoresoftware/manticoresearch-php)
 [![GitHub Issues](https://img.shields.io/github/issues/manticoresoftware/manticoresearch-php)](https://github.com/manticoresoftware/manticoresearch-php/issues)
 
+![codecov.io](https://codecov.io/github/manticoresoftware/manticoresearch-php/branch.svg?branch=master)
+
 
 Official PHP client for Manticore Search.
 
