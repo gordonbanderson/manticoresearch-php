@@ -12,7 +12,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase
 
     public function testBulkInsertError(): void
     {
-        $response = static::$client->bulk(['body' => [
+        static::$client->bulk(['body' => [
             ['insert' => ['index' => 'bulktest', 'id' => 1, 'doc' => ['title' => 'test']]],
             ['insert' => ['index' => 'bulktest', 'id' => 2, 'doc' => ['title' => 'test']]],
             ['insert' => ['index' => 'bulktest', 'id' => 3, 'doc' => ['title' => 'test']]],

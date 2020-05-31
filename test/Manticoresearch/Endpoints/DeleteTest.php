@@ -34,6 +34,12 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
         ];
 
         $response = self::$client->delete($doc);
+        $this->assertEquals([
+            '_index' => 'products',
+            '_id' => 100,
+            'found' => true,
+            'result' => 'deleted',
+        ], $response);
         $helper->search('products', 'broken', 0);
     }
 

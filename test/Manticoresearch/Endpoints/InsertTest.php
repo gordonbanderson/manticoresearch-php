@@ -49,7 +49,7 @@ class InsertTest extends \PHPUnit\Framework\TestCase
         // reinsert, this should fail due to duplicate ID
         $this->expectException(\Manticoresearch\Exceptions\ResponseException::class);
         $this->expectExceptionMessage('{"type":"duplicate id \'1001\'","index":"products"}');
-        $response = $client->insert(['body' => $doc]);
+        $client->insert(['body' => $doc]);
     }
 
 }

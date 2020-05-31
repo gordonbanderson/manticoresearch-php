@@ -38,7 +38,7 @@ class UpdateTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
         ];
-        $result = self::$client->update($partial);
+        self::$client->update($partial);
 
         $search = [
             'body' => [

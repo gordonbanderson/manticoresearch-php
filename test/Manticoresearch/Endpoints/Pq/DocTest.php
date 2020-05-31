@@ -21,7 +21,7 @@ class DocTest extends \PHPUnit\Framework\TestCase
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Index name is missing.');
-        $response = $client->pq()->doc($params);
+        $client->pq()->doc($params);
     }
 
     public function testSetGetIndex(): void
