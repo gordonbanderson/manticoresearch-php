@@ -372,9 +372,9 @@ class IndexTest extends TestCase
 
     /**
      * @param bool $keywords true if storing keywords, sor Suggest
-     * @return Index an empty index
+     * @return \Manticoresearch\Index an empty index
      */
-    protected function getIndex($keywords = false): Index
+    protected function getIndex(bool $keywords = false): Index
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
@@ -408,10 +408,7 @@ class IndexTest extends TestCase
         return $this->index;
     }
 
-    /**
-     * @param Index $index
-     */
-    protected function addDocument($index): void
+    protected function addDocument(Index $index): void
     {
         $index->addDocument([
             'title' => 'This is an example document for testing',

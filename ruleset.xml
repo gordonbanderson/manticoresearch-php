@@ -54,7 +54,7 @@
 	<rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
 	<!-- <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/> -->
-	<rule ref="SlevomatCodingStandard.ControlStructures.RequireYodaComparison"/>
+	<!-- <rule ref="SlevomatCodingStandard.ControlStructures.RequireYodaComparison"/> -->
 	<rule ref="SlevomatCodingStandard.ControlStructures.UselessTernaryOperator"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator"/>
 	<!-- <rule ref="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses"/> -->
