@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test;
 
@@ -10,7 +9,8 @@ use Psr\Log\NullLogger;
 
 class TransportTest extends TestCase
 {
-    public function testBadStaticTransportCreate()
+
+    public function testBadStaticTransportCreate(): void
     {
         $connection = new Connection([]);
         $this->expectException('Exception');
@@ -18,7 +18,7 @@ class TransportTest extends TestCase
         $transport = Transport::create('badtransport', $connection, new NullLogger());
     }
 
-    public function testSetUpURI()
+    public function testSetUpURI(): void
     {
         $transport = new Transport();
         $class = new \ReflectionClass('Manticoresearch\Transport');
@@ -28,4 +28,5 @@ class TransportTest extends TestCase
         $url = $method->invokeArgs($transport, ['/search', ['a' => 1, 'b' => false]]);
         $this->assertEquals('/search?a=1&b=false', $url);
     }
+
 }

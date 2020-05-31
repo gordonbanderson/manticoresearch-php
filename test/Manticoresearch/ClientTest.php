@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test;
 
@@ -12,36 +11,37 @@ use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-    public function testEmptyConfig()
+
+    public function testEmptyConfig(): void
     {
         $client = new Client();
         $this->assertCount(1, $client->getConnections());
     }
 
-    public function testObjectStrategy()
+    public function testObjectStrategy(): void
     {
-        $client = new Client(["connectionStrategy"  => new Connection\Strategy\RoundRobin()]);
+        $client = new Client(["connectionStrategy" => new Connection\Strategy\RoundRobin()]);
         $this->assertCount(1, $client->getConnections());
     }
 
-    public function testClassnameStrategy()
+    public function testClassnameStrategy(): void
     {
-        $client = new Client(["connectionStrategy"  => 'Connection\Strategy\RoundRobin']);
+        $client = new Client(["connectionStrategy" => 'Connection\Strategy\RoundRobin']);
         $this->assertCount(1, $client->getConnections());
     }
 
-    public function testCluster()
+    public function testCluster(): void
     {
         $client = new Client();
         $this->assertInstanceOf('Manticoresearch\Cluster', $client->cluster());
     }
 
-    public function testCreationWithConnection()
+    public function testCreationWithConnection(): void
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $connection = new Connection($params);
         $params = ['connections' => $connection];
@@ -49,7 +49,7 @@ class ClientTest extends TestCase
         $this->assertCount(1, $client->getConnections());
     }
 
-    public function testCreationWithConnectionSingularArray()
+    public function testCreationWithConnectionSingularArray(): void
     {
         $params = ['host' => $_SERVER['MS_HOST'], 'port' => $_SERVER['MS_PORT']];
         $connection = new Connection($params);
@@ -58,15 +58,16 @@ class ClientTest extends TestCase
         $this->assertCount(1, $client->getConnections());
     }
 
-    public function testStrategyConfig()
+    public function testStrategyConfig(): void
     {
         $params = ['connectionStrategy' => 'Random'];
-        $client = Client::create($params); //new Client($params);
+        //new Client($params);
+        $client = Client::create($params);
         $strategy = $client->getConnectionPool()->getStrategy();
         $this->assertInstanceOf(Random::class, $strategy);
     }
 
-    public function testConnectionError()
+    public function testConnectionError(): void
     {
         $params = ['host' => '127.0.0.1', 'port' => 9307];
         $client = new Client($params);
@@ -74,7 +75,7 @@ class ClientTest extends TestCase
         $client->search(['body'=>'']);
     }
 
-    public function testDouble()
+    public function testDouble(): void
     {
         $params = ['connections'=>
             [
@@ -87,12 +88,12 @@ class ClientTest extends TestCase
                     'username' => 'test',
                     'password' => 'secret',
                     'headers' => [
-                        'X-Forwarded-Host' => 'mydev.domain.com'
+                        'X-Forwarded-Host' => 'mydev.domain.com',
                     ],
                     'curl' => [
-                        CURLOPT_FAILONERROR => true
+                        \CURLOPT_FAILONERROR => true,
                     ],
-                    'persistent' => true
+                    'persistent' => true,
                 ],
                 [
                     'host' => '123.0.0.2',
@@ -100,21 +101,21 @@ class ClientTest extends TestCase
                     'timeout' => 5,
                     'transport' => 'Https',
                     'curl' =>[
-                        CURLOPT_CAPATH => 'path/to/my/ca/folder',
-                        CURLOPT_SSL_VERIFYPEER => true
+                        \CURLOPT_CAPATH => 'path/to/my/ca/folder',
+                        \CURLOPT_SSL_VERIFYPEER => true,
                     ],
                     'connection_timeout' => 1,
-                    'persistent' => true
+                    'persistent' => true,
                 ],
 
-            ]
+            ],
         ];
-        $client =  new Client($params);
+        $client = new Client($params);
         $this->expectException(ConnectionException::class);
         $client->search(['body'=>'']);
     }
 
-    public function testGetLastResponse()
+    public function testGetLastResponse(): void
     {
         $helper = new PopulateHelperTest();
         $helper->populateForKeywords();
@@ -126,11 +127,12 @@ class ClientTest extends TestCase
                 'query' => [
                     'match' => ['*' => 'broken'],
                 ],
-            ]
+            ],
         ];
 
         $result = $client->search($payload);
         $lastResponse = $client->getLastResponse()->getResponse();
         $this->assertEquals($result, $lastResponse);
     }
+
 }

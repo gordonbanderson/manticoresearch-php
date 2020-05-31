@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test;
 
@@ -9,15 +8,16 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
 {
-    public function testGetSetTime()
+
+    public function testGetSetTime(): void
     {
         $response = new Response([]);
-        $time = time();
+        $time = \time();
         $response->setTime($time);
         $this->assertEquals($time, $response->getTime());
     }
 
-    public function testGetSetTransportInfo()
+    public function testGetSetTransportInfo(): void
     {
         $response = new Response([]);
         $transsportInfo = 'transport info';
@@ -25,14 +25,14 @@ class ResponseTest extends TestCase
         $this->assertEquals($transsportInfo, $response->getTransportInfo());
     }
 
-    public function testConstructorWithArray()
+    public function testConstructorWithArray(): void
     {
         $payload = ['test' => true];
         $response = new Response($payload);
         $this->assertEquals($payload, $response->getResponse());
     }
 
-    public function testConstructorWithInvalidJSON()
+    public function testConstructorWithInvalidJSON(): void
     {
         $payload = '["test": this is not valid JSON';
         $response = new Response($payload);
@@ -40,4 +40,5 @@ class ResponseTest extends TestCase
         $this->expectException(RuntimeException::class);
         $response->getResponse();
     }
+
 }

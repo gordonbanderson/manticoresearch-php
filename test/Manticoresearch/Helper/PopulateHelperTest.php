@@ -1,11 +1,13 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Helper;
 
 use Manticoresearch\Client;
 
 class PopulateHelperTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Client */
+
+    /** @var \Manticoresearch\Client */
     private $client;
 
     public function getClient()
@@ -13,19 +15,20 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $this->client = new Client($params);
+
         return $this->client;
     }
 
-    public function populateForKeywords()
+    public function populateForKeywords(): void
     {
         $this->getClient();
 
         $this->client->indices()->drop([
             'index' => 'products',
-                'body' => ['silent' => true]
+                'body' => ['silent' => true],
             ]);
 
         $params = [
@@ -34,18 +37,18 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
+                        'options' => ['indexed', 'stored'],
                     ],
                     'price' => [
-                        'type' => 'float'
-                    ]
+                        'type' => 'float',
+                    ],
                 ],
                 'settings' => [
                     'rt_mem_limit' => '256M',
-                    'min_infix_len' => '3'
+                    'min_infix_len' => '3',
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $this->client->indices()->create($params);
         $this->client->replace([
@@ -54,9 +57,9 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
                 'id'=> 100,
                 'doc' => [
                     'title' =>'this product is not broken',
-                    'price' => 2.99
-                ]
-            ]
+                    'price' => 2.99,
+                ],
+            ],
         ]);
     }
 
@@ -70,11 +73,12 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
                 'query' => [
                     'match' => ['*' => $query],
                 ],
-            ]
+            ],
         ];
         $results = $this->client->search($search);
         $actualTotal = $results['hits']['total'];
         $this->assertEquals($numberOfResultsExpected, $actualTotal);
+
         return $results;
     }
 
@@ -88,9 +92,10 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         return $this->client->nodes()->status();
     }
 
-    public function testDummy()
+    public function testDummy(): void
     {
         $a = 1;
         $this->assertEquals(1, $a);
     }
+
 }

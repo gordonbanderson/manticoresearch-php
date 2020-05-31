@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Endpoints\Nodes\Threads;
@@ -6,29 +7,30 @@ use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class ThreadsTest extends \PHPUnit\Framework\TestCase
 {
-    public function testThreads()
+
+    public function testThreads(): void
     {
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
         $response = $client->nodes()->threads();
 
         // there is only one key returned, but it is always a different number
-        $index = array_keys($response);
+        $index = \array_keys($response);
         $response2 = $response[$index[0]];
 
         // get the keys
-        $keys = array_keys($response2);
+        $keys = \array_keys($response2);
         $this->assertEquals([
             'Name',
             'Proto',
             'State',
             'Host',
             'Time',
-            'Info'
+            'Info',
         ], $keys);
     }
 
-    public function testSetBody()
+    public function testSetBody(): void
     {
         $threads = new Threads();
 
@@ -37,4 +39,5 @@ class ThreadsTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('mode=raw&query=SHOW THREADS  OPTION red=0,yellow=1', $threads->getBody());
     }
+
 }

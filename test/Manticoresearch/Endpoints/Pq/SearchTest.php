@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Pq;
 
@@ -8,7 +8,8 @@ use Manticoresearch\Exceptions\RuntimeException;
 
 class SearchTest extends \PHPUnit\Framework\TestCase
 {
-    public function testMissingIndexName()
+
+    public function testMissingIndexName(): void
     {
         $client = new Client();
         $params = [
@@ -18,42 +19,43 @@ class SearchTest extends \PHPUnit\Framework\TestCase
                         'document' => [
                             'subject'=>'test',
                             'content' => 'some content',
-                            'catid' =>5
-                        ]
-                    ]
-                ]
-            ]
+                            'catid' =>5,
+                        ],
+                    ],
+                ],
+            ],
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Index name is missing.');
         $response = $client->pq()->doc($params);
     }
 
-    public function testSetGetIndex()
+    public function testSetGetIndex(): void
     {
         $search = new Search();
         $search->setIndex('products');
         $this->assertEquals('products', $search->getIndex());
     }
 
-    public function testMethod()
+    public function testMethod(): void
     {
         $search = new Search();
         $this->assertEquals('POST', $search->getMethod());
     }
 
-    public function testGetPath()
+    public function testGetPath(): void
     {
         $search = new Search();
         $search->setIndex('products');
         $this->assertEquals('/json/pq/products/_search', $search->getPath());
     }
 
-    public function testGetPathIndexMissing()
+    public function testGetPathIndexMissing(): void
     {
         $search = new Search();
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Index name is missing');
         $search->getPath();
     }
+
 }

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test;
 
@@ -13,56 +12,10 @@ use PHPUnit\Framework\TestCase;
 
 class IndexTest extends TestCase
 {
+
     protected $index;
 
-    protected function getIndex($keywords = false): Index
-    {
-        $params = [
-            'host' => $_SERVER['MS_HOST'],
-            'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
-        ];
-        $this->index = new Index(new Client($params));
-        $this->index->setName('testindex');
-        $this->index->drop(true);
-
-        $options = [];
-        if ($keywords === true) {
-            $options = [
-                'dict' => 'keywords',
-                'min_infix_len' => 2
-            ];
-        }
-
-        // for coverage purposes, does not affect functionality as index already dropped silently
-        $options['silent'] = true;
-
-        $this->index->create([
-            'title' => ['type' => 'text'],
-            'gid' => ['type' => 'int'],
-            'label' => ['type' => 'string'],
-            'tags' => ['type' => 'multi'],
-            'props' => ['type' => 'json']
-        ], $options);
-        return $this->index;
-    }
-
-    protected function addDocument($index)
-    {
-        $index->addDocument([
-            'title' => 'This is an example document for testing',
-            'gid' => 1,
-            'label' => 'not used',
-            'tags' => [1, 2, 3],
-            'props' => [
-                'color' => 'blue',
-                'rule' => ['one', 'two']
-            ]
-        ], 1);
-    }
-
-
-    public function testReplaceDocument()
+    public function testReplaceDocument(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
@@ -73,8 +26,8 @@ class IndexTest extends TestCase
             'tags' => [1, 2, 3],
             'props' => [
                 'color' => 'blue',
-                'rule' => ['one', 'two']
-            ]
+                'rule' => ['one', 'two'],
+            ],
         ], 1);
 
         $this->assertEquals([
@@ -86,7 +39,7 @@ class IndexTest extends TestCase
         ], $response);
     }
 
-    public function testReplaceDocuments()
+    public function testReplaceDocuments(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
@@ -98,8 +51,8 @@ class IndexTest extends TestCase
             'tags' => [1, 2, 3],
             'props' => [
                 'color' => 'blue',
-                'rule' => ['one', 'two']
-            ]
+                'rule' => ['one', 'two'],
+            ],
         ]]);
 
         $this->assertEquals([
@@ -109,14 +62,14 @@ class IndexTest extends TestCase
                     '_id' => 1,
                     'created' => false,
                     'result' => 'updated',
-                    'status' => 200
-                ]]
+                    'status' => 200,
+                ]],
             ],
-            'errors' => false
+            'errors' => false,
         ], $response);
     }
 
-    public function testClassOfHit()
+    public function testClassOfHit(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
@@ -124,7 +77,7 @@ class IndexTest extends TestCase
         $this->assertInstanceOf('Manticoresearch\ResultHit', $hit);
     }
 
-    public function testClassOfNonExistentHit()
+    public function testClassOfNonExistentHit(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
@@ -132,7 +85,7 @@ class IndexTest extends TestCase
         $this->assertNull($hit);
     }
 
-    public function testUpdateTagsThenDeleteDocument()
+    public function testUpdateTagsThenDeleteDocument(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
@@ -146,23 +99,22 @@ class IndexTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testStatus()
+    public function testStatus(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
         $status = $index->status();
         $this->assertEquals(1, $status['indexed_documents']);
-        $keys = array_keys($status);
+        $keys = \array_keys($status);
 
         $this->assertArrayHasKey('disk_bytes', $status);
     }
 
-
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $index = $this->getIndex();
-        $keys = array_keys($index->describe());
-        sort($keys);
+        $keys = \array_keys($index->describe());
+        \sort($keys);
         $this->assertEquals([
             'gid',
             'id',
@@ -173,15 +125,15 @@ class IndexTest extends TestCase
         ], $keys);
     }
 
-    public function testAlterDrop()
+    public function testAlterDrop(): void
     {
         $index = $this->getIndex();
         $response = $index->alter('drop', 'props');
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
 
         // use describe to demonstrate the field has been removed
-        $keys = array_keys($index->describe());
-        sort($keys);
+        $keys = \array_keys($index->describe());
+        \sort($keys);
         $this->assertEquals([
             'gid',
             'id',
@@ -191,7 +143,7 @@ class IndexTest extends TestCase
         ], $keys);
     }
 
-    public function testAlterAdd()
+    public function testAlterAdd(): void
     {
         $index = $this->getIndex();
         $response = $index->alter('add', 'example', 'string');
@@ -199,8 +151,8 @@ class IndexTest extends TestCase
 
         // use describe to demonstrate the field has been removed
         $description = $index->describe();
-        $keys = array_keys($description);
-        sort($keys);
+        $keys = \array_keys($description);
+        \sort($keys);
         $this->assertEquals([
             'example',
             'gid',
@@ -214,7 +166,7 @@ class IndexTest extends TestCase
         $this->assertEquals(['Type' => 'string', 'Properties' => ''], $description['example']);
     }
 
-    public function testAlterInvalidOperation()
+    public function testAlterInvalidOperation(): void
     {
         $index = $this->getIndex();
         $this->expectException(RuntimeException::class);
@@ -222,21 +174,21 @@ class IndexTest extends TestCase
         $response = $index->alter('invalidOperation', 'example', 'string');
     }
 
-    public function testTruncate()
+    public function testTruncate(): void
     {
         $index = $this->getIndex();
         $response = $index->truncate();
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
-    public function testOptimze()
+    public function testOptimze(): void
     {
         $index = $this->getIndex();
         $response = $index->optimize(true);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
-    public function testFlush()
+    public function testFlush(): void
     {
         $index = $this->getIndex();
         $response = $index->flush();
@@ -245,7 +197,7 @@ class IndexTest extends TestCase
         $this->assertEquals(null, $response);
     }
 
-    public function testFlushRamChunk()
+    public function testFlushRamChunk(): void
     {
         $index = $this->getIndex();
         $response = $index->flushramchunk();
@@ -254,8 +206,7 @@ class IndexTest extends TestCase
         $this->assertEquals(null, $response);
     }
 
-
-    public function testSearch()
+    public function testSearch(): void
     {
         $index = $this->getIndex();
         $this->addDocument($index);
@@ -264,7 +215,7 @@ class IndexTest extends TestCase
         $index->drop();
     }
 
-    public function testIndexSuggest()
+    public function testIndexSuggest(): void
     {
         $index = $this->getIndex(true);
         $this->addDocument($index);
@@ -272,14 +223,14 @@ class IndexTest extends TestCase
         $this->assertEquals(['distance' => 1, 'docs' => 1], $result['testing']);
     }
 
-    public function testIndexExplainQuery()
+    public function testIndexExplainQuery(): void
     {
         $index = $this->getIndex(true);
         $result = $index->explainQuery('test');
         $this->assertEquals('AND(KEYWORD(test, querypos=1))', $result['transformed_tree']);
     }
 
-    public function testIndexKeywords()
+    public function testIndexKeywords(): void
     {
         $index = $this->getIndex(true);
         $this->addDocument($index);
@@ -289,7 +240,7 @@ class IndexTest extends TestCase
         $this->assertEquals(['tokenized' => 'tasting', 'normalized' => 'tasting'], $result[1]);
     }
 
-    public function testStart()
+    public function testStart(): void
     {
         $index = $this->getIndex();
 
@@ -300,10 +251,10 @@ class IndexTest extends TestCase
                 'type' => 'text'],
                 'plot' => ['type' => 'text'],
                 'year' => ['type' => 'integer'],
-                'rating' => ['type' => 'float']
+                'rating' => ['type' => 'float'],
             ],
             [],
-            true
+            true,
         );
         $index->addDocument(
             [
@@ -312,9 +263,9 @@ class IndexTest extends TestCase
                     ' to negotiate a peace treaty. Captain Picard and his crew discover a serious threat to the ' .
                     'Federation once Praetor Shinzon plans to attack Earth.',
                 'year' => 2002,
-                'rating' => 6.4
+                'rating' => 6.4,
             ],
-            1
+            1,
         );
         $index->addDocuments([
             ['id' => 2, 'title' => 'Interstellar', 'plot' => 'A team of explorers travel through a wormhole in space' .
@@ -327,7 +278,7 @@ class IndexTest extends TestCase
                 ' walking straight into a deadly trap.', 'year' => 2018, 'rating' => 8.4],
             ['id' => 5, 'title' => 'Alien', 'plot' => ' After a space merchant vessel receives an unknown transmission'.
                 ' as a distress call, one of the team\'s member is attacked by a mysterious life form and they soon' .
-                ' realize that its life cycle has merely begun.', 'year' => 1979, 'rating' => 8.4]
+                ' realize that its life cycle has merely begun.', 'year' => 1979, 'rating' => 8.4],
         ]);
 
         $results = $index->search('space team')->get();
@@ -380,7 +331,7 @@ class IndexTest extends TestCase
         $this->assertEquals('', $response['error']);
     }
 
-    public function testPercolates()
+    public function testPercolates(): void
     {
         $this->getIndex();
         $this->index->setName('pqtest');
@@ -388,7 +339,7 @@ class IndexTest extends TestCase
         $this->index->create(
             ['title' => ['type' => 'text'], 'gid' => ['type' => 'integer']],
             ['type' => 'percolate'],
-            true
+            true,
         );
         $this->index->addDocument(['query' => 'find me'], 6);
         $this->index->addDocument(['query' => 'fast'], 8);
@@ -397,7 +348,7 @@ class IndexTest extends TestCase
             ['title' => 'find me fast'],
             ['title' => 'pick me'],
             ['title' => 'something else'],
-            ['title' => 'this is false']
+            ['title' => 'this is false'],
         ];
         $result = $this->index->percolate($docs);
         $this->assertEquals(3, $result->count());
@@ -409,16 +360,64 @@ class IndexTest extends TestCase
         $this->index->drop();
     }
 
-    public function testGetClient()
+    public function testGetClient(): void
     {
         $index = $this->getIndex();
         $this->assertInstanceOf('Manticoresearch\Client', $index->getClient());
     }
 
-
-    public function testSetGetName()
+    public function testSetGetName(): void
     {
         $index = $this->getIndex();
         $this->assertEquals('testindex', $index->getName());
     }
+
+    protected function getIndex($keywords = false): Index
+    {
+        $params = [
+            'host' => $_SERVER['MS_HOST'],
+            'port' => $_SERVER['MS_PORT'],
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+        ];
+        $this->index = new Index(new Client($params));
+        $this->index->setName('testindex');
+        $this->index->drop(true);
+
+        $options = [];
+
+        if (true === $keywords) {
+            $options = [
+                'dict' => 'keywords',
+                'min_infix_len' => 2,
+            ];
+        }
+
+        // for coverage purposes, does not affect functionality as index already dropped silently
+        $options['silent'] = true;
+
+        $this->index->create([
+            'title' => ['type' => 'text'],
+            'gid' => ['type' => 'int'],
+            'label' => ['type' => 'string'],
+            'tags' => ['type' => 'multi'],
+            'props' => ['type' => 'json'],
+        ], $options);
+
+        return $this->index;
+    }
+
+    protected function addDocument($index): void
+    {
+        $index->addDocument([
+            'title' => 'This is an example document for testing',
+            'gid' => 1,
+            'label' => 'not used',
+            'tags' => [1, 2, 3],
+            'props' => [
+                'color' => 'blue',
+                'rule' => ['one', 'two'],
+            ],
+        ], 1);
+    }
+
 }

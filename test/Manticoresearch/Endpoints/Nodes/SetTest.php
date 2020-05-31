@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Endpoints\Nodes\Set;
@@ -11,7 +12,7 @@ class SetTest extends \PHPUnit\Framework\TestCase
     /**
      * See https://docs.manticoresearch.com/latest/html/sphinxql_reference/set_syntax.html
      */
-    public function testSet()
+    public function testSet(): void
     {
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
@@ -19,19 +20,20 @@ class SetTest extends \PHPUnit\Framework\TestCase
             'body' => [
                 'variable' => [
                     'name' => 'PROFILING',
-                    'value' => 0
-                ]
-            ]
+                    'value' => 0,
+                ],
+            ],
         ];
         $response = $client->nodes()->set($payload);
-        $this->assertEquals(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertEquals(['total'=>0, 'error'=>'', 'warning'=>''], $response);
     }
 
-    public function testSetBodyNoVariable()
+    public function testSetBodyNoVariable(): void
     {
         $set = new Set();
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Variable is missing for /nodes/set');
         $set->setBody([]);
     }
+
 }

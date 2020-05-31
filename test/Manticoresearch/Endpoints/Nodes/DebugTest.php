@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Test\Helper\PopulateHelperTest;
@@ -6,15 +7,15 @@ use Manticoresearch\Test\Helper\PopulateHelperTest;
 class DebugTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function testDebug()
+    public function testDebug(): void
     {
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
         $response = $client->nodes()->debug(['body' => []]);
 
         // cannot test values, uptime will never be consistent.  As such use keys instead
-        $keys = array_keys($response);
-        sort($keys);
+        $keys = \array_keys($response);
+        \sort($keys);
 
         $this->assertEquals([
             'flush logs',
@@ -27,4 +28,5 @@ class DebugTest extends \PHPUnit\Framework\TestCase
             'tasks',
         ], $keys);
     }
+
 }

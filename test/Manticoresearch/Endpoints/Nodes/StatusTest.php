@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Endpoints\Nodes\Status;
@@ -7,27 +8,27 @@ use Manticoresearch\Test\Helper\PopulateHelperTest;
 class StatusTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function testGetPath()
+    public function testGetPath(): void
     {
         $status = new Status();
         $this->assertEquals('/sql', $status->getPath());
     }
 
-    public function testGetMethod()
+    public function testGetMethod(): void
     {
         $status = new Status();
         $this->assertEquals('POST', $status->getMethod());
     }
 
-    public function testGetStatus()
+    public function testGetStatus(): void
     {
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
         $response = $client->nodes()->status();
 
         // cannot test values, uptime will never be consistent.  As such use keys instead
-        $keys = array_keys($response);
-        sort($keys);
+        $keys = \array_keys($response);
+        \sort($keys);
 
         $this->assertEquals([
             'agent_connect',
@@ -82,4 +83,5 @@ class StatusTest extends \PHPUnit\Framework\TestCase
 
         ], $keys);
     }
+
 }

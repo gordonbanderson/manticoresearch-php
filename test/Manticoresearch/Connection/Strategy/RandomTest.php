@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Connection\Strategy;
 
 use Manticoresearch\Client;
@@ -7,22 +8,23 @@ use PHPUnit\Framework\TestCase;
 
 class RandomTest extends TestCase
 {
-    public function testSequenceGood()
+
+    public function testSequenceGood(): void
     {
         // seed the random number generator, to obtain consistent results
-        srand(1000);
+        \srand(1000);
 
-        $client = new Client(["connectionStrategy"  =>"Random"]);
+        $client = new Client(["connectionStrategy" =>"Random"]);
         $client->setHosts([
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => (int)($_SERVER['MS_PORT']),
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
             ],
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => 9309,
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
             ],
 
         ]);
@@ -44,18 +46,22 @@ class RandomTest extends TestCase
         $this->assertSame($_SERVER['MS_HOST'], $connection->getHost());
 
         $mConns = [];
+
         for ($i=0; $i<10; $i++) {
             $mConns[] = mock::mock(\Manticoresearch\Connection::class)
                 ->shouldReceive('isAlive')->andReturn(true)->getMock();
         }
+
         $connectionPool = new \Manticoresearch\Connection\ConnectionPool(
             $mConns,
             new \Manticoresearch\Connection\Strategy\RoundRobin(),
-            10
+            10,
         );
-        foreach (range(0, 9) as $i) {
+
+        foreach (\range(0, 9) as $i) {
             $c = $connectionPool->getConnection();
             $this->assertSame($mConns[$i], $c);
         }
     }
+
 }

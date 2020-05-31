@@ -1,21 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Indices;
 
-use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Indices\Alter;
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class AlterTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Client */
+
+    /** @var \Manticoresearch\Client */
     private static $client;
 
-    /** @var PopulateHelperTest */
+    /** @var \Manticoresearch\Test\Helper\PopulateHelperTest */
     private static $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -25,33 +25,33 @@ class AlterTest extends \PHPUnit\Framework\TestCase
         self::$helper = $helper;
     }
 
-    public function testIndexNoOperation()
+    public function testIndexNoOperation(): void
     {
         $params = [
             'index' => 'products',
             'body' => [
                 'column' => [
-                    'name' => 'price'
-                ]
+                    'name' => 'price',
+                ],
 
-            ]
+            ],
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Operation is missing.');
         $response = self::$client->indices()->alter($params);
     }
 
-    public function testIndexDropColumn()
+    public function testIndexDropColumn(): void
     {
         $params = [
         'index' => 'products',
         'body' => [
             'operation' => 'drop',
             'column' => [
-                'name' => 'price'
-            ]
+                'name' => 'price',
+            ],
 
-        ]
+        ],
         ];
         $response = self::$client->indices()->alter($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
@@ -69,12 +69,12 @@ class AlterTest extends \PHPUnit\Framework\TestCase
             [
                 'Type' => 'field',
                 'Properties' => 'indexed stored',
-            ]
+            ],
         ];
         $this->assertEquals($expectedResponse, $response);
     }
 
-    public function testIndexAddColumn()
+    public function testIndexAddColumn(): void
     {
         $params = [
             'index' => 'products',
@@ -82,13 +82,13 @@ class AlterTest extends \PHPUnit\Framework\TestCase
                 'operation' => 'add',
                 'column' => [
                     'name' => 'tag',
-                    'type'=> 'string'
-                ]
+                    'type'=> 'string',
+                ],
 
-            ]
+            ],
         ];
         $response = self::$client->indices()->alter($params);
-        $this->assertEquals(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertEquals(['total'=>0, 'error'=>'', 'warning'=>''], $response);
 
         // check the column has been added using the Describe endpoint
         $response = self::$client->indices()->describe(['index' => 'products']);
@@ -115,23 +115,24 @@ class AlterTest extends \PHPUnit\Framework\TestCase
                 [
                     'Type' => 'string',
                     'Properties' => '',
-                ]
+                ],
         ];
         $this->assertEquals($expectedResponse, $response);
     }
 
-    public function testSetGetIndex()
+    public function testSetGetIndex(): void
     {
         $alter = new Alter();
         $alter->setIndex('testName');
         $this->assertEquals('testName', $alter->getIndex());
     }
 
-    public function testSetBodyNoIndex()
+    public function testSetBodyNoIndex(): void
     {
         $alter = new Alter();
         $this->expectExceptionMessage('Index name is missing.');
         $this->expectException(RuntimeException::class);
         $alter->setBody([]);
     }
+
 }

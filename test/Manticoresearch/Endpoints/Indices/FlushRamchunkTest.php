@@ -1,19 +1,41 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Indices;
 
-use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Indices\FlushRamchunk;
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class FlushRamchunkTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Client */
+
+    /** @var \Manticoresearch\Client */
     private static $client;
 
-    /** @var PopulateHelperTest */
+    /** @var \Manticoresearch\Test\Helper\PopulateHelperTest */
     private static $helper;
+
+    public function testFlushRamchunkIndex(): void
+    {
+        $response = self::$client->indices()->flushramchunk(['index' => 'products']);
+
+        $this->assertEquals(['total'=>0, 'error'=>'', 'warning'=>''], $response);
+    }
+
+    public function testSetGetIndex(): void
+    {
+        $describe = new FlushRamchunk();
+        $describe->setIndex('testName');
+        $this->assertEquals('testName', $describe->getIndex());
+    }
+
+    public function testSetBodyNoIndex(): void
+    {
+        $describe = new FlushRamchunk();
+        $this->expectExceptionMessage('Index name is missing.');
+        $this->expectException(RuntimeException::class);
+        $describe->setBody([]);
+    }
 
     public static function setUpBeforeClass(): void
     {
@@ -25,25 +47,4 @@ class FlushRamchunkTest extends \PHPUnit\Framework\TestCase
         self::$helper = $helper;
     }
 
-    public function testFlushRamchunkIndex()
-    {
-        $response = self::$client->indices()->flushramchunk(['index' => 'products']);
-
-        $this->assertEquals(['total'=>0,'error'=>'','warning'=>''], $response);
-    }
-
-    public function testSetGetIndex()
-    {
-        $describe = new FlushRamchunk();
-        $describe->setIndex('testName');
-        $this->assertEquals('testName', $describe->getIndex());
-    }
-
-    public function testSetBodyNoIndex()
-    {
-        $describe = new FlushRamchunk();
-        $this->expectExceptionMessage('Index name is missing.');
-        $this->expectException(RuntimeException::class);
-        $describe->setBody([]);
-    }
 }

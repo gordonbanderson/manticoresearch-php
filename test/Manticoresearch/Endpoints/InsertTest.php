@@ -1,22 +1,23 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints;
 
 class InsertTest extends \PHPUnit\Framework\TestCase
 {
-    public function testPath()
+
+    public function testPath(): void
     {
         $insert = new \Manticoresearch\Endpoints\Insert();
         $this->assertEquals('/json/insert', $insert->getPath());
     }
 
-    public function testGetMethod()
+    public function testGetMethod(): void
     {
         $insert = new \Manticoresearch\Endpoints\Insert();
         $this->assertEquals('POST', $insert->getMethod());
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $helper = new \Manticoresearch\Test\Helper\PopulateHelperTest();
         $helper->populateForKeywords();
@@ -28,8 +29,8 @@ class InsertTest extends \PHPUnit\Framework\TestCase
             'id' => 1001,
             'doc' => [
                 'title' => 'Star Trek: Nemesis DVD',
-                'price' => 6.99
-            ]
+                'price' => 6.99,
+            ],
         ];
         $response = $client->insert(['body' => $doc]);
 
@@ -50,4 +51,5 @@ class InsertTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('{"type":"duplicate id \'1001\'","index":"products"}');
         $response = $client->insert(['body' => $doc]);
     }
+
 }

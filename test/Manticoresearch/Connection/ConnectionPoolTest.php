@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Connection;
 
@@ -8,26 +8,28 @@ use PHPUnit\Framework\TestCase;
 
 class ConnectionPoolTest extends TestCase
 {
-    /** @var Connection\ConnectionPool */
+
+    /** @var \Manticoresearch\Connection\ConnectionPool */
     private $connectionPool;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
+
         $this->connectionPool = new Connection\ConnectionPool([], new Connection\Strategy\StaticRoundRobin(), 4);
     }
 
-    public function testSetGetStrategy()
+    public function testSetGetStrategy(): void
     {
         // change the connection pool strategy
         $this->connectionPool->setStrategy(new Connection\Strategy\RoundRobin());
         $this->assertEquals(
             'Manticoresearch\Connection\Strategy\RoundRobin',
-            get_class($this->connectionPool->getStrategy())
+            \get_class($this->connectionPool->getStrategy()),
         );
     }
 
-    public function testHasConnection()
+    public function testHasConnection(): void
     {
         $this->assertTrue($this->connectionPool->hasConnections());
 
@@ -35,7 +37,7 @@ class ConnectionPoolTest extends TestCase
         $this->assertFalse($this->connectionPool->hasConnections());
     }
 
-    public function testSetConnections()
+    public function testSetConnections(): void
     {
         $client = new Client();
         $this->assertCount(1, $client->getConnections());
@@ -44,7 +46,7 @@ class ConnectionPoolTest extends TestCase
         $this->assertEquals($connections, $this->connectionPool->getConnections());
     }
 
-    public function testGetConnection()
+    public function testGetConnection(): void
     {
         $client = new Client();
         $this->assertCount(1, $client->getConnections());
@@ -55,7 +57,7 @@ class ConnectionPoolTest extends TestCase
         $this->assertEquals($connections[0], $connection);
     }
 
-    public function testGetConnectionNotAlive()
+    public function testGetConnectionNotAlive(): void
     {
         $client = new Client();
         $this->assertCount(1, $client->getConnections());
@@ -67,4 +69,5 @@ class ConnectionPoolTest extends TestCase
         $connection = $this->connectionPool->getConnection();
         $this->assertEquals($connections[0], $connection);
     }
+
 }

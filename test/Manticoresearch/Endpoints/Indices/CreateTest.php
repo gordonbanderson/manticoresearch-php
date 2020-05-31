@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Indices;
 
@@ -8,12 +8,13 @@ use Manticoresearch\Exceptions\RuntimeException;
 
 class CreateTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateTableWithOptions()
+
+    public function testCreateTableWithOptions(): void
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $client = new Client($params);
         $params = [
@@ -22,29 +23,29 @@ class CreateTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
+                        'options' => ['indexed', 'stored'],
                     ],
                     'price' => [
-                        'type' => 'float'
-                    ]
+                        'type' => 'float',
+                    ],
                 ],
                 'settings' => [
                     'rt_mem_limit' => '256M',
-                    'min_infix_len' => '3'
+                    'min_infix_len' => '3',
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $response = $client->indices()->create($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total'=>0, 'error'=>'', 'warning'=>''], $response);
         $params = [
-            'index'=>'products'
+            'index'=>'products',
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total'=>0, 'error'=>'', 'warning'=>''], $response);
     }
 
-    public function testCreateDistributed()
+    public function testCreateDistributed(): void
     {
         $params = ['host' => $_SERVER['MS_HOST'], 'port' => $_SERVER['MS_PORT']];
         $client = new Client($params);
@@ -54,11 +55,11 @@ class CreateTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
-                    ]
+                        'options' => ['indexed', 'stored'],
+                    ],
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $response = $client->indices()->create($params);
 
@@ -67,47 +68,48 @@ class CreateTest extends \PHPUnit\Framework\TestCase
             'body' => [
                 'settings' =>[
                     'type' =>'distributed',
-                    'local' => 'testrt'
-                ]
-            ]
+                    'local' => 'testrt',
+                ],
+            ],
         ];
         $response = $client->indices()->create($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total'=>0, 'error'=>'', 'warning'=>''], $response);
         $params = [
-            'index'=>'testrtdist'
+            'index'=>'testrtdist',
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total'=>0, 'error'=>'', 'warning'=>''], $response);
     }
 
-    public function testNoIndexDrop()
+    public function testNoIndexDrop(): void
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $client = new Client($params);
         $params = [
             'index'=>'noindexname',
-            'body' => ['silent'=>true]
+            'body' => ['silent'=>true],
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total'=>0, 'error'=>'', 'warning'=>''], $response);
     }
 
-    public function testSetGetIndex()
+    public function testSetGetIndex(): void
     {
         $describe = new Create();
         $describe->setIndex('testName');
         $this->assertEquals('testName', $describe->getIndex());
     }
 
-    public function testSetBodyNoIndex()
+    public function testSetBodyNoIndex(): void
     {
         $describe = new Create();
         $this->expectExceptionMessage('Index name is missing');
         $this->expectException(RuntimeException::class);
         $describe->setBody([]);
     }
+
 }

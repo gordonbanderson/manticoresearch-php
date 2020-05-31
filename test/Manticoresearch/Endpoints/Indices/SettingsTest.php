@@ -1,19 +1,45 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Indices;
 
-use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Indices\Settings;
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class SettingsTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Client */
+
+    /** @var \Manticoresearch\Client */
     private static $client;
 
-    /** @var PopulateHelperTest */
+    /** @var \Manticoresearch\Test\Helper\PopulateHelperTest */
     private static $helper;
+
+    public function testSettings(): void
+    {
+        $response = self::$client->indices()->settings(['index' => 'products']);
+
+        $expectedSettings = "min_prefix_len = 1\n" .
+                            "min_infix_len = 3\n" .
+                            "charset_table = non_cjk\n";
+
+        $this->assertEquals(['settings' => $expectedSettings], $response);
+    }
+
+    public function testSetGetIndex(): void
+    {
+        $describe = new Settings();
+        $describe->setIndex('testName');
+        $this->assertEquals('testName', $describe->getIndex());
+    }
+
+    public function testSetBodyNoIndex(): void
+    {
+        $describe = new Settings();
+        $this->expectExceptionMessage('Index name is missing.');
+        $this->expectException(RuntimeException::class);
+        $describe->setBody([]);
+    }
 
     public static function setUpBeforeClass(): void
     {
@@ -25,29 +51,4 @@ class SettingsTest extends \PHPUnit\Framework\TestCase
         self::$helper = $helper;
     }
 
-    public function testSettings()
-    {
-        $response = self::$client->indices()->settings(['index' => 'products']);
-
-        $expectedSettings = "min_prefix_len = 1\n" .
-                            "min_infix_len = 3\n" .
-                            "charset_table = non_cjk\n";
-
-        $this->assertEquals(['settings' => $expectedSettings], $response);
-    }
-
-    public function testSetGetIndex()
-    {
-        $describe = new Settings();
-        $describe->setIndex('testName');
-        $this->assertEquals('testName', $describe->getIndex());
-    }
-
-    public function testSetBodyNoIndex()
-    {
-        $describe = new Settings();
-        $this->expectExceptionMessage('Index name is missing.');
-        $this->expectException(RuntimeException::class);
-        $describe->setBody([]);
-    }
 }

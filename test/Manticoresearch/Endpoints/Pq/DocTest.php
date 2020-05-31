@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Pq;
 
@@ -8,43 +8,44 @@ use Manticoresearch\Exceptions\RuntimeException;
 
 class DocTest extends \PHPUnit\Framework\TestCase
 {
-    public function testMissingIndexName()
+
+    public function testMissingIndexName(): void
     {
         $client = new Client();
         $params = [
 
             'body' => [
                 'query' => ['match'=>['subject'=>'test']],
-                'tags' => ['test1','test2']
-            ]
+                'tags' => ['test1','test2'],
+            ],
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Index name is missing.');
         $response = $client->pq()->doc($params);
     }
 
-    public function testSetGetIndex()
+    public function testSetGetIndex(): void
     {
         $doc = new Doc();
         $doc->setIndex('products');
         $this->assertEquals('products', $doc->getIndex());
     }
 
-    public function testSetGetID()
+    public function testSetGetID(): void
     {
         $doc = new Doc();
         $doc->setId(4);
         $this->assertEquals(4, $doc->getId());
     }
 
-    public function testGetPathNoID()
+    public function testGetPathNoID(): void
     {
         $doc = new Doc();
         $doc->setIndex('products');
         $this->assertEquals('/json/pq/products/doc', $doc->getPath());
     }
 
-    public function testGetPathWithID()
+    public function testGetPathWithID(): void
     {
         $doc = new Doc();
         $doc->setIndex('products');
@@ -52,9 +53,10 @@ class DocTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/json/pq/products/doc/4', $doc->getPath());
     }
 
-    public function testMethod()
+    public function testMethod(): void
     {
         $dbq = new Doc();
         $this->assertEquals('POST', $dbq->getMethod());
     }
+
 }

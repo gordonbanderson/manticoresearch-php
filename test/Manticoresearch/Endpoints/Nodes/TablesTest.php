@@ -1,26 +1,28 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class TablesTest extends \PHPUnit\Framework\TestCase
 {
-    public function testTables()
+
+    public function testTables(): void
     {
         $helper = new PopulateHelperTest();
         $client = $helper->getClient();
 
         // need to remove indexes created by other tests
         $otherIndexes = [
-          'testrt', 'products', 'testrtdist', 'testindex', 'movies', 'bulktest'
+          'testrt', 'products', 'testrtdist', 'testindex', 'movies', 'bulktest',
         ];
+
         foreach ($otherIndexes as $index) {
             $client->indices()->drop([
                     'index' => $index,
-                    'body' => ['silent' => true]
+                    'body' => ['silent' => true],
                 ]);
         }
-
 
         $helper->populateForKeywords();
 
@@ -29,4 +31,5 @@ class TablesTest extends \PHPUnit\Framework\TestCase
         $response = $client->nodes()->tables();
         $this->assertEquals(['products' => 'rt'], $response);
     }
+
 }

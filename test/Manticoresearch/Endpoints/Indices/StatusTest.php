@@ -1,31 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Test\Endpoints\Indices;
 
-use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Indices\Status;
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class StatusTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Client */
+
+    /** @var \Manticoresearch\Client */
     private static $client;
 
-    /** @var PopulateHelperTest */
+    /** @var \Manticoresearch\Test\Helper\PopulateHelperTest */
     private static $helper;
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        $helper = new PopulateHelperTest();
-        $helper->populateForKeywords();
-        self::$client = $helper->getClient();
-        self::$helper = $helper;
-    }
-
-    public function testIndexStatus()
+    public function testIndexStatus(): void
     {
         $response = self::$client->indices()->status(['index' => 'products']);
 
@@ -50,21 +40,32 @@ class StatusTest extends \PHPUnit\Framework\TestCase
             'found_rows_5min',
             'found_rows_15min',
             'found_rows_total',
-        ], array_keys($response));
+        ], \array_keys($response));
     }
 
-    public function testSetGetIndex()
+    public function testSetGetIndex(): void
     {
         $describe = new Status();
         $describe->setIndex('testName');
         $this->assertEquals('testName', $describe->getIndex());
     }
 
-    public function testSetBodyNoIndex()
+    public function testSetBodyNoIndex(): void
     {
         $describe = new Status();
         $this->expectExceptionMessage('Index name is missing.');
         $this->expectException(RuntimeException::class);
         $describe->setBody([]);
     }
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        $helper = new PopulateHelperTest();
+        $helper->populateForKeywords();
+        self::$client = $helper->getClient();
+        self::$helper = $helper;
+    }
+
 }
