@@ -14,7 +14,7 @@ class ClusterTest extends TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         //client for node 1
         $client = new Client($params);
@@ -22,7 +22,7 @@ class ClusterTest extends TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT2'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         //client for node 2
         $client2 = new Client($params);

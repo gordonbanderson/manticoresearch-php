@@ -15,7 +15,7 @@ class TransportTest extends TestCase
         $connection = new Connection([]);
         $this->expectException('Exception');
         $this->expectExceptionMessage('Bad transport');
-        $transport = Transport::create('badtransport', $connection, new NullLogger());
+        Transport::create('badtransport', $connection, new NullLogger());
     }
 
     public function testSetUpURI(): void

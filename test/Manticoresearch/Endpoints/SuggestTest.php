@@ -40,7 +40,7 @@ class SuggestTest extends \PHPUnit\Framework\TestCase
         ];
         $this->expectException(\Manticoresearch\Exceptions\ResponseException::class);
         $this->expectExceptionMessage('no such index productsNOT');
-        $response = static::$client->suggest($params);
+        static::$client->suggest($params);
     }
 
     public function testResponseExceptionViaSuggest(): void

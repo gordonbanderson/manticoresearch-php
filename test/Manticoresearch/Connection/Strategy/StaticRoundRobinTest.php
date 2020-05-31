@@ -17,12 +17,12 @@ class StaticRoundRobinTest extends TestCase
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => $_SERVER['MS_PORT'],
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+                'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
             ],
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => $_SERVER['MS_PORT'],
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+                'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
             ],
         ]);
 
@@ -64,6 +64,11 @@ class StaticRoundRobinTest extends TestCase
             ],
         ];
         $response = $client->indices()->create($params);
+        $this->assertEquals([
+            'total' => 0,
+            'error' => '',
+            'warning' => '',
+        ], $response);
         $params = [
             'body' => [
                 'index' => 'testrt',
@@ -92,7 +97,7 @@ class StaticRoundRobinTest extends TestCase
         $connectionPool = new \Manticoresearch\Connection\ConnectionPool(
             $mConns,
             new \Manticoresearch\Connection\Strategy\StaticRoundRobin(),
-            10,
+            10
         );
 
         foreach (\range(0, 9) as $i) {

@@ -19,12 +19,12 @@ class RandomTest extends TestCase
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => (int)($_SERVER['MS_PORT']),
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+                'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
             ],
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => 9309,
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+                'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
             ],
 
         ]);
