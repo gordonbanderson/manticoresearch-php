@@ -25,7 +25,7 @@ class ConnectionPoolTest extends TestCase
         $this->connectionPool->setStrategy(new Connection\Strategy\RoundRobin());
         $this->assertEquals(
             'Manticoresearch\Connection\Strategy\RoundRobin',
-            \get_class($this->connectionPool->getStrategy())
+            \get_class($this->connectionPool->getStrategy()),
         );
     }
 

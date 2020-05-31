@@ -385,7 +385,7 @@ class IndexTest extends TestCase
 
         $options = [];
 
-        if (true === $keywords) {
+        if ($keywords === true) {
             $options = [
                 'dict' => 'keywords',
                 'min_infix_len' => 2,

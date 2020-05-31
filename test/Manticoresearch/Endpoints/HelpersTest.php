@@ -47,7 +47,7 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => isset($_SERVER['TRANSPORT']) ?  $_SERVER['TRANSPORT'] : 'Http',
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         static::$client = new Client($params);
         $params = [

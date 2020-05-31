@@ -14,7 +14,7 @@ class CreateTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => isset($_SERVER['TRANSPORT']) ?  $_SERVER['TRANSPORT'] : 'Http',
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         $client = new Client($params);
         $params = [
@@ -86,7 +86,7 @@ class CreateTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => isset($_SERVER['TRANSPORT']) ?  $_SERVER['TRANSPORT'] : 'Http',
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         $client = new Client($params);
         $params = [
