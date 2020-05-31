@@ -19,7 +19,12 @@
     },
     "require-dev": {
         "mockery/mockery": "*",
+        "php-parallel-lint/php-console-highlighter": "^0.5.0",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan-strict-rules": "^0.12.2",
         "phpunit/phpunit": "^7.5",
+        "slevomat/coding-standard": "^6.3",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
@@ -40,5 +45,12 @@
             "name": "Adrian Nuta",
             "email": "adriannuta@gmail.com"
         }
-    ]
+    ],
+    "scripts": {
+        "checkcs": "vendor/bin/phpcs --standard=ruleset.xml --extensions=php --tab-width=4 -sp src test",
+        "fixcs": "vendor/bin/phpcbf --standard=ruleset.xml --extensions=php --tab-width=4 -sp src test",
+        "phpstan": "vendor/bin/phpstan analyse --level=6 -c test/phpstan.neon src/",
+        "psalm": "vendor/bin/psalm --show-info=true",
+        "test": "vendor/bin/phpunit test"
+    }
 }
