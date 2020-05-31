@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Query;
 
@@ -8,50 +7,57 @@ use Manticoresearch\Query;
 
 class Distance extends Query
 {
+
     /**
      * Distance constructor.
+     *
      * @param array $args
      */
-    public function __construct($args = [])
+    public function __construct(array $args = [])
     {
         $this->params['geo_distance'] = [];
         $this->params['geo_distance']['distance_type'] = $args['type'] ?? 'adaptive';
-        if (count($args) > 0) {
-            if (!isset($args['location_anchor'])) {
-                throw new RuntimeException('anchors not provided');
-            }
-            $this->params['geo_distance']['location_anchor'] = $args['location_anchor'];
-            if (!isset($args['location_source'])) {
-                throw new RuntimeException('source attributes not provided');
-            }
-            if (is_array($args['location_source'])) {
-                $args['location_source'] = implode(',', $args['location_source']);
-            }
-            $this->params['geo_distance']['location_source'] = $args['location_source'];
 
-            if (!isset($args['location_distance'])) {
-                throw new RuntimeException('distance not provided');
-            }
-            $this->params['geo_distance']['distance'] = $args['location_distance'];
+        if (\count($args) <= 0) {
+            return;
         }
+
+        if (!isset($args['location_anchor'])) {
+            throw new RuntimeException('anchors not provided');
+        }
+
+        $this->params['geo_distance']['location_anchor'] = $args['location_anchor'];
+
+        if (!isset($args['location_source'])) {
+            throw new RuntimeException('source attributes not provided');
+        }
+
+        if (\is_array($args['location_source'])) {
+            $args['location_source'] = \implode(',', $args['location_source']);
+        }
+
+        $this->params['geo_distance']['location_source'] = $args['location_source'];
+
+        if (!isset($args['location_distance'])) {
+            throw new RuntimeException('distance not provided');
+        }
+
+        $this->params['geo_distance']['distance'] = $args['location_distance'];
     }
 
-    /**
-     * @param string $distance the distance and it's units, e.g. 1000m, 200km
-     */
-    public function setDistance($distance)
+    /** @param string $distance the distance and it's units, e.g. 1000m, 200km */
+    public function setDistance(string $distance): void
     {
         $this->params['geo_distance']['distance'] = $distance;
     }
 
-    /**
-     * @param array|string  $source Either an array or comma separated string of the fields to reference for lat & lon
-     */
-    public function setSource($source)
+    /** @param array|string $source Either an array or comma separated string of the fields to reference for lat & lon */
+    public function setSource($source): void
     {
-        if (is_array($source)) {
-            $source = implode(',', $source);
+        if (\is_array($source)) {
+            $source = \implode(',', $source);
         }
+
         $this->params['geo_distance']['location_source'] = $source;
     }
 
@@ -61,16 +67,15 @@ class Distance extends Query
      * @param float $lat the latitude of the anchor
      * @param float $lon the longitude of the anchor
      */
-    public function setAnchor($lat, $lon)
+    public function setAnchor(float $lat, float $lon): void
     {
         $this->params['geo_distance']['location_anchor'] = ['lat' => $lat, 'lon' => $lon];
     }
 
-    /**
-     * @param string $algorithm the algorithm for distance measurement, either adaptive or haversine
-     */
-    public function setDistanceType($algorithm)
+    /** @param string $algorithm the algorithm for distance measurement, either adaptive or haversine */
+    public function setDistanceType(string $algorithm): void
     {
         $this->params['geo_distance']['distance_type'] = $algorithm ?? 'adaptive';
     }
+
 }

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Query;
 
@@ -7,6 +6,7 @@ use Manticoresearch\Query;
 
 class ScriptFields extends Query
 {
+
     private $obj;
 
     public function __construct()
@@ -14,18 +14,19 @@ class ScriptFields extends Query
         $this->obj = new \stdClass();
     }
 
-    public function add($field, $args = [])
+    public function add($field, $args = []): void
     {
         $this->obj->$field = [
             'script' => [
-                'inline' => $args
-            ]
+                'inline' => $args,
+            ],
 
         ];
     }
 
     public function toArray()
     {
-        return $this->convertArray(json_decode(json_encode($this->obj), true));
+        return $this->convertArray(\json_decode(\json_encode($this->obj), true));
     }
+
 }
