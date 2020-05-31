@@ -55,6 +55,10 @@ class ResultSet implements \Iterator, \Countable
         $this->position = 0;
     }
 
+
+    /**
+     * @return ResultHit
+     */
     public function current()
     {
         return new ResultHit($this->array[$this->position]);

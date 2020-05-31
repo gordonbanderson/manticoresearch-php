@@ -159,7 +159,7 @@ class Nodes
 
     /**
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function status($params = [])
     {

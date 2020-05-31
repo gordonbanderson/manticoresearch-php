@@ -59,7 +59,7 @@ class Indices
     /**
      *
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function create($params)
     {
@@ -74,7 +74,7 @@ class Indices
 
     /**
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function describe($params)
     {
@@ -89,7 +89,7 @@ class Indices
 
     /**
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function drop($params)
     {
@@ -103,7 +103,7 @@ class Indices
     }
     /**
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function import($params)
     {

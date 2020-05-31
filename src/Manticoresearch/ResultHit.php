@@ -65,6 +65,10 @@ class ResultHit
         return isset($this->data['_source'][$key]);
     }
 
+
+    /**
+     * @return string|int|float
+     */
     public function getData()
     {
         return $this->data['_source'];
