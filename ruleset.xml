@@ -44,6 +44,11 @@
 	<rule ref="SlevomatCodingStandard.Commenting.DisallowCommentAfterCode" />
 	<rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations" />
 
+
+
+
+
+
 	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.UselessIfConditionWithReturn"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowShortTernaryOperator"/>
@@ -51,6 +56,8 @@
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireMultiLineTernaryOperator"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
+
+
 	<rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
 	<!-- <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/> -->
@@ -58,7 +65,9 @@
 	<rule ref="SlevomatCodingStandard.ControlStructures.UselessTernaryOperator"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator"/>
 	<!-- <rule ref="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses"/> -->
-	<rule ref="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing"/>
+	<!-- <rule ref="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing"/> -->
+
+
 	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireTernaryOperator"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses"/>
