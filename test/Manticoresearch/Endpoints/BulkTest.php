@@ -43,7 +43,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase
             ['insert' => ['index' => 'bulktest', 'id' => 3, 'doc' => ['title' => 'test']]],
         ]]);
         $this->expectException(ResponseException::class);
-        $response = static::$client->bulk(['body' => [
+        static::$client->bulk(['body' => [
             ['insert' => ['index' => 'bulktest', 'id' => 1, 'doc' => ['title' => 'test']]],
             ['insert' => ['index' => 'bulktest', 'id' => 2, 'doc' => ['title' => 'test']]],
             ['insert' => ['index' => 'bulktest', 'id' => 3, 'doc' => ['title' => 'test']]],
