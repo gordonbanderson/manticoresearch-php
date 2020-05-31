@@ -10,10 +10,7 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
     /** @var \Manticoresearch\Client */
     private $client;
 
-    /**
-     * @return Client
-     */
-    public function getClient()
+    public function getClient(): Client
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
@@ -72,7 +69,7 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
      * @param int $numberOfResultsExpected how many results are expected
      * @return array|\Manticoresearch\Response
      */
-    public function search($indexName, $query, $numberOfResultsExpected)
+    public function search(string $indexName, string $query, int $numberOfResultsExpected)
     {
         $this->getClient();
 

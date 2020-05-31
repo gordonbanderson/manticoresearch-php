@@ -97,7 +97,7 @@ class StaticRoundRobinTest extends TestCase
         $connectionPool = new \Manticoresearch\Connection\ConnectionPool(
             $mConns,
             new \Manticoresearch\Connection\Strategy\StaticRoundRobin(),
-            10
+            10,
         );
 
         for ($i=0; $i<10; $i++) {
