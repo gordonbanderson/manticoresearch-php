@@ -102,11 +102,11 @@ class Response
     {
         $response = $this->getResponse();
         if (isset($response['error'])) {
-            return \json_encode($response['error'], JSON_PRETTY_PRINT);
+            return \json_encode($response['error'], \JSON_PRETTY_PRINT);
         }
 
         if (isset($response['errors'])) {
-            return \json_encode($response['errors'], JSON_PRETTY_PRINT);
+            return \json_encode($response['errors'], \JSON_PRETTY_PRINT);
         }
 
         return '';
