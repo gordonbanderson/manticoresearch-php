@@ -609,10 +609,7 @@ class SearchTest extends TestCase
         self::$search->setIndex('movies');
     }
 
-    /**
-     * @return ResultSet
-     */
-    protected function getResultSet()
+    protected function getResultSet(): ResultSet
     {
         return self::$search->search('"team of explorers"/2')->get();
     }
@@ -731,7 +728,7 @@ class SearchTest extends TestCase
      * @param ResultSet $results
      * @return array
      */
-    private function yearsFromResults( $results)
+    private function yearsFromResults( $results): array
     {
         $years = [];
 

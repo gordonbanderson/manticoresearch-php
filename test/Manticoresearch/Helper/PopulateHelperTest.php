@@ -67,7 +67,7 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
      * @param string $indexName the name of the index
      * @param string $query the search query
      * @param int $numberOfResultsExpected how many results are expected
-     * @return array|\Manticoresearch\Response
+     * @return array
      */
     public function search(string $indexName, string $query, int $numberOfResultsExpected)
     {
@@ -88,12 +88,19 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         return $results;
     }
 
+    /**
+     * @param string $indexName
+     * @return array
+     */
     public function describe($indexName)
     {
         return $this->client->indices()->describe(['index'=> $indexName]);
     }
 
-    public function status($indexName)
+    /**
+     * @return array
+     */
+    public function status()
     {
         return $this->client->nodes()->status();
     }
