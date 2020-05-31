@@ -49,6 +49,7 @@
     "scripts": {
         "checkcs": "vendor/bin/phpcs --standard=ruleset.xml --extensions=php --tab-width=4 -sp src test",
         "fixcs": "vendor/bin/phpcbf --standard=ruleset.xml --extensions=php --tab-width=4 -sp src test",
+        "lint": "vendor/bin/parallel-lint src/ test/",
         "phpstan": "vendor/bin/phpstan analyse --level=6 -c test/phpstan.neon src/",
         "psalm": "vendor/bin/psalm --show-info=true",
         "test": "vendor/bin/phpunit test"
