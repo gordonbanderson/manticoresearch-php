@@ -1,9 +1,6 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Results;
-
-use Manticoresearch\Response;
 
 class PercolateDocsResultSet implements \Iterator, \Countable
 {
@@ -11,7 +8,7 @@ class PercolateDocsResultSet implements \Iterator, \Countable
     /** @var int The position of the iterator through the result set */
     protected $position = 0;
 
-    /** @var Response */
+    /** @var \Manticoresearch\Response */
     protected $response;
 
     protected $array = [];
@@ -28,27 +25,35 @@ class PercolateDocsResultSet implements \Iterator, \Countable
 
     public function __construct($responseObj, $docs)
     {
-
         foreach ($docs as $doc) {
             $this->array[] = ['doc' => $doc, 'queries' => []];
         }
+
         $this->response = $responseObj;
         $response = $responseObj->getResponse();
-        if (isset($response['hits']['hits'])) {
-            $hits = $response['hits']['hits'];
-            foreach ($hits as $query) {
-                if (isset($query['fields'], $query['fields']['_percolator_document_slot'])) {
-                    foreach ($query['fields']['_percolator_document_slot'] as $d) {
-                        if (isset($this->array[$d-1])) {
-                            $this->array[$d-1]['queries'][] =$query;
-                        }
-                    }
+
+        if (!isset($response['hits']['hits'])) {
+            return;
+        }
+
+        $hits = $response['hits']['hits'];
+
+        foreach ($hits as $query) {
+            if (!isset($query['fields'], $query['fields']['_percolator_document_slot'])) {
+                continue;
+            }
+
+            foreach ($query['fields']['_percolator_document_slot'] as $d) {
+                if (!isset($this->array[$d-1])) {
+                    continue;
                 }
+
+                $this->array[$d-1]['queries'][] =$query;
             }
         }
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -58,7 +63,7 @@ class PercolateDocsResultSet implements \Iterator, \Countable
         return new PercolateResultDoc($this->array[$this->position]);
     }
 
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -88,21 +93,19 @@ class PercolateDocsResultSet implements \Iterator, \Countable
         return $this->timed_out;
     }
 
-    /**
-     * @return Response
-     */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
     }
 
     public function count()
     {
-        return count($this->array);
+        return \count($this->array);
     }
 
     public function getProfile()
     {
         return $this->profile;
     }
+
 }
