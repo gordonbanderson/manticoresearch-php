@@ -23,7 +23,7 @@
 	<rule ref="SlevomatCodingStandard.Classes.DisallowLateStaticBindingForConstants"/>
 	<rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
 	<rule ref="SlevomatCodingStandard.Classes.ParentCallSpacing"/>
-	<rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
+	<!-- <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/> -->
 	<rule ref="SlevomatCodingStandard.Classes.TraitUseSpacing"/>
 	<rule ref="SlevomatCodingStandard.Classes.MethodSpacing"/>
 	<rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming"/>

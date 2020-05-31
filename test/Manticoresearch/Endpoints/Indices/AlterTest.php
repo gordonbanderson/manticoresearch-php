@@ -38,7 +38,7 @@ class AlterTest extends \PHPUnit\Framework\TestCase
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Operation is missing.');
-        $response = self::$client->indices()->alter($params);
+        self::$client->indices()->alter($params);
     }
 
     public function testIndexDropColumn(): void

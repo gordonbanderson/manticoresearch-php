@@ -29,7 +29,7 @@ class StatusTest extends \PHPUnit\Framework\TestCase
         // cannot test values, uptime will never be consistent.  As such use keys instead
         $keys = \array_keys($response);
         \sort($keys);
-        
+
         $this->assertEquals([
             'agent_connect',
             'agent_retry',
