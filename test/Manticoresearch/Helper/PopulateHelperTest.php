@@ -88,7 +88,10 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         return $results;
     }
 
-    /** @return array */
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * @return array
+     */
     public function describe(string $indexName): array
     {
         return $this->client->indices()->describe(['index'=> $indexName]);
