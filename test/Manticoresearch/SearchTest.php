@@ -726,7 +726,7 @@ class SearchTest extends TestCase
     /**
      * Helper method to return just the years from the results. This is used to validate filtering and sorting
      *
-     * @return array
+     * @return array<int>
      */
     private function yearsFromResults( ResultSet $results): array
     {
@@ -735,7 +735,9 @@ class SearchTest extends TestCase
         while ($results->valid()) {
             $hit = $results->current();
             $data = $hit->getData();
-            $years[] = $data['year'];
+
+            // year is an integer, cast it as such in order that type checking passes
+            $years[] = (int)$data['year'];
             $results->next();
         }
 
