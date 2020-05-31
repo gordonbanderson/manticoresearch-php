@@ -1,31 +1,28 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Connection;
 
 use Manticoresearch\Connection;
 use Manticoresearch\Connection\Strategy\SelectorInterface;
-use Manticoresearch\Exceptions\ConnectionException;
 use Manticoresearch\Exceptions\NoMoreNodesException;
 
 /**
  * Class ConnectionPool
+ *
  * @package Manticoresearch\Connection
  */
 class ConnectionPool
 {
-    /**
-     * @var array
-     */
-    protected $connections;
 
-    /**
-     * @var SelectorInterface
-     */
+    /** @var \Manticoresearch\Connection\Strategy\SelectorInterface */
     public $strategy;
 
     public $retries;
 
     public $retries_attempts =0;
+
+    /** @var array */
+    protected $connections;
 
     public function __construct(array $connections, SelectorInterface $strategy, int $retries)
     {
@@ -34,31 +31,31 @@ class ConnectionPool
         $this->retries = $retries;
     }
 
-    /**
-     * @return array
-     */
+    /** @return array */
     public function getConnections(): array
     {
         return $this->connections;
     }
 
-    /**
-     * @param array $connections
-     */
-    public function setConnections(array $connections)
+    /** @param array $connections */
+    public function setConnections(array $connections): void
     {
         $this->connections = $connections;
     }
+
     public function getConnection(): Connection
     {
         $this->retries_attempts++;
-        $connection =   $this->strategy->getConnection($this->connections);
+        $connection = $this->strategy->getConnection($this->connections);
+
         if ($connection->isAlive()) {
             return $connection;
         }
+
         if ($this->retries_attempts < $this->retries) {
             return $connection;
         }
+
         throw new NoMoreNodesException('No more retries left');
     }
 
@@ -67,19 +64,14 @@ class ConnectionPool
         return $this->retries_attempts < $this->retries;
     }
 
-    /**
-     * @return SelectorInterface
-     */
     public function getStrategy(): SelectorInterface
     {
         return $this->strategy;
     }
 
-    /**
-     * @param SelectorInterface $strategy
-     */
-    public function setStrategy(SelectorInterface $strategy)
+    public function setStrategy(SelectorInterface $strategy): void
     {
         $this->strategy = $strategy;
     }
+
 }

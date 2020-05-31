@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Connection\Strategy;
 
@@ -7,25 +6,25 @@ use Manticoresearch\Connection;
 
 /**
  * Class StaticRoundRobin
+ *
  * @package Manticoresearch\Connection\Strategy
  */
 class StaticRoundRobin implements SelectorInterface
 {
-    /**
-     * @var int
-     */
+
+    /** @var int */
     private $current = 0;
 
-    /**
-     * @param array $connections
-     * @return Connection
-     */
-    public function getConnection(array $connections):Connection
+    /** @param array $connections */
+    public function getConnection(array $connections): Connection
     {
-        if ($connections[$this->current % count($connections)]->isAlive()) {
+        if ($connections[$this->current % \count($connections)]->isAlive()) {
             return $connections[$this->current];
         }
+
         ++$this->current;
-        return $connections[$this->current % count($connections)];
+
+        return $connections[$this->current % \count($connections)];
     }
+
 }
