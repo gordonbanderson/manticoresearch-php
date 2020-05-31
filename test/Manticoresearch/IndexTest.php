@@ -105,8 +105,6 @@ class IndexTest extends TestCase
         $this->addDocument($index);
         $status = $index->status();
         $this->assertEquals(1, $status['indexed_documents']);
-        $keys = \array_keys($status);
-
         $this->assertArrayHasKey('disk_bytes', $status);
     }
 
@@ -171,7 +169,7 @@ class IndexTest extends TestCase
         $index = $this->getIndex();
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Alter operation not recognized');
-        $response = $index->alter('invalidOperation', 'example', 'string');
+        $index->alter('invalidOperation', 'example', 'string');
     }
 
     public function testTruncate(): void
@@ -372,12 +370,16 @@ class IndexTest extends TestCase
         $this->assertEquals('testindex', $index->getName());
     }
 
+    /**
+     * @param bool $keywords true if storing keywords, sor Suggest
+     * @return Index an empty index
+     */
     protected function getIndex($keywords = false): Index
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         $this->index = new Index(new Client($params));
         $this->index->setName('testindex');
@@ -406,6 +408,9 @@ class IndexTest extends TestCase
         return $this->index;
     }
 
+    /**
+     * @param Index $index
+     */
     protected function addDocument($index): void
     {
         $index->addDocument([

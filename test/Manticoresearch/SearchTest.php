@@ -609,6 +609,9 @@ class SearchTest extends TestCase
         self::$search->setIndex('movies');
     }
 
+    /**
+     * @return ResultSet
+     */
     protected function getResultSet()
     {
         return self::$search->search('"team of explorers"/2')->get();
@@ -628,7 +631,7 @@ class SearchTest extends TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         $client = new Client($params);
         $client->indices()->drop(['index' => 'movies', 'body'=>['silent'=>true]]);
@@ -726,6 +729,7 @@ class SearchTest extends TestCase
     /**
      * Helper method to return just the years from the results. This is used to validate filtering and sorting
      * @param ResultSet $results
+     * @return array
      */
     private function yearsFromResults( $results)
     {

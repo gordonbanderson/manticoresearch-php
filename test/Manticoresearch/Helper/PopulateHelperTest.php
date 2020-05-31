@@ -10,12 +10,15 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
     /** @var \Manticoresearch\Client */
     private $client;
 
+    /**
+     * @return Client
+     */
     public function getClient()
     {
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
+            'transport' => isset($_SERVER['TRANSPORT']) ? $_SERVER['TRANSPORT'] : 'Http',
         ];
         $this->client = new Client($params);
 
@@ -63,6 +66,12 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
+    /**
+     * @param string $indexName the name of the index
+     * @param string $query the search query
+     * @param int $numberOfResultsExpected how many results are expected
+     * @return array|\Manticoresearch\Response
+     */
     public function search($indexName, $query, $numberOfResultsExpected)
     {
         $this->getClient();

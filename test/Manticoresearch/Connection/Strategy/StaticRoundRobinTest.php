@@ -100,7 +100,7 @@ class StaticRoundRobinTest extends TestCase
             10
         );
 
-        foreach (\range(0, 9) as $i) {
+        for ($i=0; $i<10; $i++) {
             $c = $connectionPool->getConnection();
             $this->assertSame($mConns[0], $c);
         }
