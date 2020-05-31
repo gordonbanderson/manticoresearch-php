@@ -614,7 +614,7 @@ class SearchTest extends TestCase
         return self::$search->search('"team of explorers"/2')->get();
     }
 
-    protected function getFirstResultHit()
+    protected function getFirstResultHit(): \Manticoresearch\ResultHit
     {
         $result = $this->getResultSet();
         $result->rewind();
@@ -725,10 +725,10 @@ class SearchTest extends TestCase
 
     /**
      * Helper method to return just the years from the results. This is used to validate filtering and sorting
-     * @param ResultSet $results
+     *
      * @return array
      */
-    private function yearsFromResults( $results): array
+    private function yearsFromResults( ResultSet $results): array
     {
         $years = [];
 

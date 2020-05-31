@@ -69,7 +69,7 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
      * @param int $numberOfResultsExpected how many results are expected
      * @return array
      */
-    public function search(string $indexName, string $query, int $numberOfResultsExpected)
+    public function search(string $indexName, string $query, int $numberOfResultsExpected): array
     {
         $this->getClient();
 
@@ -88,19 +88,14 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         return $results;
     }
 
-    /**
-     * @param string $indexName
-     * @return array
-     */
-    public function describe($indexName)
+    /** @return array */
+    public function describe(string $indexName): array
     {
         return $this->client->indices()->describe(['index'=> $indexName]);
     }
 
-    /**
-     * @return array
-     */
-    public function status()
+    /** @return array */
+    public function status(): array
     {
         return $this->client->nodes()->status();
     }
