@@ -9,6 +9,7 @@ use Manticoresearch\Query\Distance;
 use Manticoresearch\Query\Equals;
 use Manticoresearch\Query\Match;
 use Manticoresearch\Query\Range;
+use Manticoresearch\ResultSet;
 use Manticoresearch\Search;
 use PHPUnit\Framework\TestCase;
 
@@ -724,8 +725,9 @@ class SearchTest extends TestCase
 
     /**
      * Helper method to return just the years from the results. This is used to validate filtering and sorting
+     * @param ResultSet $results
      */
-    private function yearsFromResults(ResultSet $results)
+    private function yearsFromResults($results)
     {
         $years = [];
 
