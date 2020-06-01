@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Nodes;
 
@@ -7,9 +6,8 @@ use Manticoresearch\Endpoints\EmulateBySql;
 
 class Status extends EmulateBySql
 {
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -17,4 +15,5 @@ class Status extends EmulateBySql
         return parent::setBody(['query' => "SHOW STATUS " .
             (isset($params['pattern']) ? " LIKE '" . $params['pattern'] . "'" : "")]);
     }
+
 }

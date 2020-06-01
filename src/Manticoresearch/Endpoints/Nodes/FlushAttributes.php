@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Nodes;
 
@@ -8,15 +7,15 @@ use Manticoresearch\Utils;
 
 class FlushAttributes extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
     {
-
         return parent::setBody(['query' => "FLUSH ATTRIBUTES"]);
     }
+
 }

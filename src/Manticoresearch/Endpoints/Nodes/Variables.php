@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Nodes;
 
@@ -7,9 +6,8 @@ use Manticoresearch\Endpoints\EmulateBySql;
 
 class Variables extends EmulateBySql
 {
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -21,6 +19,8 @@ class Variables extends EmulateBySql
         if (isset($params['where'])) {
             $option = "WHERE variable_name='".$params['where']['variable_name']."'";
         }
+
         return parent::setBody(['query' => "SHOW ".($params['type'] ?? '')." VARIABLES ".$option]);
     }
+
 }

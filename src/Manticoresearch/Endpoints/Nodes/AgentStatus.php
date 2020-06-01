@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Nodes;
 
@@ -13,4 +13,5 @@ class AgentStatus extends EmulateBySql
             (isset($params['agent']) ? $params['agent'] . "'" : '') . ' STATUS ' .
             (isset($params['pattern']) ? " LIKE '" . $params['pattern'] . "'" : '')]);
     }
+
 }

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Nodes;
 
@@ -9,10 +8,10 @@ use Manticoresearch\Utils;
 
 class ReloadPlugins extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -21,6 +20,8 @@ class ReloadPlugins extends EmulateBySql
         if (isset($params['library'])) {
             return parent::setBody(['query' => "RELOAD PLUGINS FROM SONAME ".$params['library']]);
         }
+
         throw new RuntimeException('library name not present in  /nodes/reloadplugins');
     }
+
 }

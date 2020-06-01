@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Nodes;
 
@@ -8,9 +7,8 @@ use Manticoresearch\Exceptions\RuntimeException;
 
 class DropFunction extends EmulateBySql
 {
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -18,6 +16,8 @@ class DropFunction extends EmulateBySql
         if (isset($params['name'])) {
             return parent::setBody(['query' => "DROP FUNCTION " . $params['name']]);
         }
+
         throw new RuntimeException('Missing function name in /nodes/dropfunction');
     }
+
 }
