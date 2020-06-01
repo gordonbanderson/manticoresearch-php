@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch;
 
@@ -8,17 +7,16 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class Connection
+ *
  * @package Manticoresearch
  */
 class Connection
 {
-    /**
-     * @var array
-     */
+
+    /** @var array */
     protected $config;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $alive;
 /*
  * $params['transport']  = transport class name
@@ -35,6 +33,7 @@ class Connection
  */
     /**
      * Connection constructor.
+     *
      * @param array $params
      */
     public function __construct(array $params)
@@ -53,59 +52,63 @@ class Connection
             'curl' => [],
             'persistent' => true
         );
-        $this->config = array_merge($this->config, $params);
+        $this->config = \array_merge($this->config, $params);
         $this->alive = true;
     }
 
-    /**
-     * @param string $host
-     * @return $this
-     */
-    public function setHost($host): self
+    /** @param array|\Manticoresearch\Connection $params |self */
+    public static function create($params): Connection
+    {
+        if (\is_array($params)) {
+            return new self($params);
+        }
+        if ($params instanceof self) {
+            return $params;
+        }
+
+        throw new RuntimeException('connection must receive array of parameters or self');
+    }
+
+    /** @return $this */
+    public function setHost(string $host): self
     {
         $this->config['host'] = $host;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getHost()
     {
         return $this->config['host'];
     }
 
     /**
-     * @param string|integer $port
+     * @param string|int $port
      * @return $this
      */
     public function setPort($port): self
     {
         $this->config['port'] = (int)$port;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getPort()
     {
         return $this->config['port'];
     }
 
-    /**
-     * @param integer $timeout
-     * @return $this
-     */
-    public function setTimeout($timeout): self
+    /** @return $this */
+    public function setTimeout(int $timeout): self
     {
         $this->config['timeout'] = (int)$timeout;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getHeaders()
     {
         return $this->config['headers'];
@@ -115,58 +118,48 @@ class Connection
      * @param array $headers
      * @return $this
      */
-    public function setheaders($headers): self
+    public function setheaders(array $headers): self
     {
         $this->config['headers'] = $headers;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getTimeout()
     {
         return $this->config['timeout'];
     }
 
-    /**
-     * @param integer $connect_timeout
-     * @return $this
-     */
-    public function setConnectTimeout($connect_timeout): self
+    /** @return $this */
+    public function setConnectTimeout(int $connect_timeout): self
     {
         $this->config['connect_timeout'] = (int)$connect_timeout;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getConnectTimeout()
     {
         return $this->config['connect_timeout'];
     }
 
-    /**
-     * @param Transport $transport
-     * @return $this
-     */
-    public function setTransport($transport): self
+    /** @return $this */
+    public function setTransport(Transport $transport): self
     {
         $this->config['transport'] = $transport;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getTransport()
     {
         return $this->config['transport'];
     }
 
     /**
-     * @param LoggerInterface $logger
      * @return mixed
      * @throws \Exception
      */
@@ -179,55 +172,33 @@ class Connection
      * @param array $config
      * @return $this
      */
-    public function setConfig($config): self
+    public function setConfig(array $config): self
     {
         foreach ($config as $ckey => $cvalue) {
             $this->config[$ckey] = $cvalue;
         }
+
         return $this;
     }
 
-    /**
-     * @param string|null $key
-     * @return mixed|null
-     *
-     */
-    public function getConfig($key = null)
+    /** @return mixed|null */
+    public function getConfig(?string $key = null)
     {
         if ($key === null) {
             return $this->config;
         }
+
         return $this->config[$key] ?? null;
     }
 
-    /**
-     * @param array|Connection $params|self
-     * @return Connection
-     */
-    public static function create($params)
-    {
-        if (is_array($params)) {
-            return new self($params);
-        }
-        if ($params instanceof self) {
-            return $params;
-        }
-        throw new RuntimeException('connection must receive array of parameters or self');
-    }
-
-    /**
-     * @return bool
-     */
     public function isAlive(): bool
     {
         return $this->alive;
     }
 
-    /**
-     * @param bool $state
-     */
-    public function mark(bool $state)
+    public function mark(bool $state): void
     {
         $this->alive = $state;
     }
+
 }
