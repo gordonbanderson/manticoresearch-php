@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints;
 
@@ -8,11 +7,11 @@ use Manticoresearch\Utils;
 
 class ExplainQuery extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
-    protected $index;
+
+    /** @var string */
+    protected $index = '';
 
     public function setBody($params = null)
     {
@@ -20,23 +19,23 @@ class ExplainQuery extends EmulateBySql
             if (isset($params['query'])) {
                 return parent::setBody(['query' => "EXPLAIN QUERY ".$this->index. '\''.$params['query'].'\'']);
             }
+
             throw new RuntimeException('Query param is missing.');
         }
+
         throw new RuntimeException('Index name is missing.');
     }
-    /**
-     * @return mixed
-     */
+
+    /** @return string */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param string $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }
