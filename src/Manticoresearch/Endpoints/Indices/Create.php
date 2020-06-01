@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Indices;
 
@@ -8,14 +8,15 @@ use Manticoresearch\Utils;
 
 /**
  * Class Create
+ *
  * @package Manticoresearch\Endpoints\Indices
  */
 class Create extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -25,8 +26,8 @@ class Create extends EmulateBySql
             if (isset($params['columns'])) {
                 foreach ($params['columns'] as $name => $settings) {
                     $column = $name . ' ' . $settings['type'];
-                    if (isset($settings['options']) && count($settings['options']) > 0) {
-                        $column .= ' ' . implode(' ', $settings['options']);
+                    if (isset($settings['options']) && \count($settings['options']) > 0) {
+                        $column .= ' ' . \implode(' ', $settings['options']);
                     }
                     $columns[] = $column;
                 }
@@ -37,27 +38,27 @@ class Create extends EmulateBySql
                     $options.=" ".$name." = '".$value."'";
                 }
             }
+
             return parent::setBody(['query' => "CREATE TABLE ".
                 (isset($params['silent']) && $params['silent']===true?' IF NOT EXISTS ':'').
                 $this->index.
-                (count($columns)>0?"(".implode(",", $columns).")":" ")
+                (\count($columns)>0?"(".\implode(",", $columns).")":" ")
                 .$options]);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
-    /**
-     * @return mixed
-     */
+
+    /** @return mixed */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param mixed $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Indices;
 
@@ -8,9 +7,8 @@ use Manticoresearch\Exceptions\RuntimeException;
 
 class Import extends EmulateBySql
 {
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -21,27 +19,26 @@ class Import extends EmulateBySql
                     'query' => 'IMPORT TABLE ' .
                         $this->index .
                         ' FROM ' .
-                        $params['path']
+                        $params['path'],
                 ]);
             }
+
             throw new RuntimeException('Missing import index path in /indices/import');
         }
+
         throw new RuntimeException('Missing index name in /indices/import');
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param mixed $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }

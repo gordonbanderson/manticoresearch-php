@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Indices;
 
@@ -9,14 +8,15 @@ use Manticoresearch\Utils;
 
 /**
  * Class Optimize
+ *
  * @package Manticoresearch\Endpoints\Indices
  */
 class Optimize extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -25,21 +25,20 @@ class Optimize extends EmulateBySql
             return parent::setBody(['query' => "OPTIMIZE INDEX ".$this->index. "".
                 (isset($params['sync'])?" OPTION sync='".$params['sync']."'":"")]);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
-    /**
-     * @return mixed
-     */
+
+    /** @return mixed */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param mixed $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }

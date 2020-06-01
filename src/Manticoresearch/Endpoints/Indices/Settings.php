@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Indices;
 
@@ -9,14 +8,15 @@ use Manticoresearch\Utils;
 
 /**
  * Class Status
+ *
  * @package Manticoresearch\Endpoints\Indices
  */
 class Settings extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -24,21 +24,20 @@ class Settings extends EmulateBySql
         if (isset($this->index)) {
             return parent::setBody(['query' => "SHOW INDEX ".$this->index. " SETTINGS"]);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
-    /**
-     * @return mixed
-     */
+
+    /** @return mixed */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param mixed $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }

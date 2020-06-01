@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Indices;
 
@@ -9,10 +8,10 @@ use Manticoresearch\Utils;
 
 class Alter extends EmulateBySql
 {
+
     use Utils;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -21,7 +20,7 @@ class Alter extends EmulateBySql
             if (isset($params['operation'])) {
                 if ($params['operation'] === 'add' && isset($params['column'])) {
                         return parent::setBody(['query' => "ALTER TABLE " . $this->index . " ADD COLUMN " .
-                            $params['column']['name'] . " " . strtoupper($params['column']['type'])]);
+                            $params['column']['name'] . " " . \strtoupper($params['column']['type'])]);
                 }
                 if ($params['operation'] === 'drop') {
                     return parent::setBody(['query' => "ALTER TABLE " . $this->index . " DROP COLUMN " .
@@ -29,24 +28,23 @@ class Alter extends EmulateBySql
                 }
                 //@todo alter setting, once is merged in master
             }
+
             throw new RuntimeException('Operation is missing.');
         }
+
         throw new RuntimeException('Index name is missing.');
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param mixed $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }

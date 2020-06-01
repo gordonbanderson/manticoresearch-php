@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints\Indices;
 
@@ -8,9 +7,8 @@ use Manticoresearch\Exceptions\RuntimeException;
 
 class Drop extends EmulateBySql
 {
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $index;
 
     public function setBody($params = null)
@@ -20,21 +18,20 @@ class Drop extends EmulateBySql
                 (isset($params['silent']) && $params['silent']===true?' IF EXISTS ':'').
                 $this->index]);
         }
+
         throw new RuntimeException('Missing index name in /indices/drop');
     }
-    /**
-     * @return mixed
-     */
+
+    /** @return mixed */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
+    /** @param mixed $index */
+    public function setIndex($index): void
     {
         $this->index = $index;
     }
+
 }
