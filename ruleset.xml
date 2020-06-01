@@ -28,7 +28,11 @@
 	<rule ref="SlevomatCodingStandard.Classes.MethodSpacing"/>
 	<rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming"/>
 	<rule ref="SlevomatCodingStandard.Classes.DisallowMultiConstantDefinition"/>
+
+	<!-- this failes even it is the only rule
 	<rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing"/>
+	-->
+
 	<rule ref="SlevomatCodingStandard.Classes.UselessLateStaticBinding"/>
 
 
@@ -124,7 +128,12 @@
 	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
 	<rule ref="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition"/>
 	<rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
-	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+		<properties>
+			<!-- this needs PHP 7.2_ -->
+			<property name="enableObjectTypeHint" value="false"/>
+		</properties>
+	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
 	<!-- This is not compatible with PHP < 7.4
 	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
