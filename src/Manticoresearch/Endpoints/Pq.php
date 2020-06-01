@@ -1,29 +1,26 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Pq\DeleteByQuery;
 use Manticoresearch\Endpoints\Pq\Doc;
-use phpDocumentor\Reflection\Types\Object_;
 
 /**
  * Class Pq
+ *
  * @package Manticoresearch\Endpoints
  */
 class Pq
 {
-    /**
-     * @var Client
-     */
+    /** @var Client  */
     protected $client;
 
     /**
      * Pq constructor.
-     * @param Client $client
+     * @param Client $client Manticoresearch PHP client
      */
-    public function __construct($client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -32,7 +29,7 @@ class Pq
      * @param array $params
      * @return mixed
      */
-    public function doc($params)
+    public function doc(array $params)
     {
         $index = $params['index'] ?? null;
         $id = $params['id'] ?? null;
@@ -44,6 +41,7 @@ class Pq
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint);
+
         return $response->getResponse();
     }
 
@@ -51,7 +49,7 @@ class Pq
      * @param array $params
      * @return mixed
      */
-    public function search($params, $obj = false)
+    public function search(array $params, $obj = false)
     {
         $index = $params['index'] ?? null;
         $body = $params['body'];
@@ -60,18 +58,17 @@ class Pq
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint);
-        if ($obj === true) {
-            return $response;
-        } else {
-            return $response->getResponse();
-        }
+
+        return $obj === true
+            ? $response
+            : $response->getResponse();
     }
 
     /**
      * @param array $params
      * @return mixed
      */
-    public function deleteByQuery($params = [])
+    public function deleteByQuery(array $params = [])
     {
         $index = $params['index'] ?? null;
         $body = $params['body'];
@@ -80,6 +77,8 @@ class Pq
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint);
+
         return $response->getResponse();
     }
+
 }
