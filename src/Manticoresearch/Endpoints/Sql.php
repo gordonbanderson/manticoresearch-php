@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace Manticoresearch\Endpoints;
 
@@ -7,30 +6,27 @@ use Manticoresearch\Request;
 
 /**
  * Class Sql
+ *
  * @package Manticoresearch\Endpoints
  */
 class Sql extends Request
 {
-    /**
-     * @return mixed|string
-     */
+
+    /** @var string */
     protected $mode;
+
     public function getPath()
     {
         return '/sql';
     }
 
-    /**
-     * @return mixed|string
-     */
+    /** @return string */
     public function getMethod()
     {
         return 'POST';
     }
 
-    /**
-     * @return mixed|string
-     */
+    /** @return string */
     public function getBody()
     {
         if ($this->mode === 'raw') {
@@ -38,19 +34,27 @@ class Sql extends Request
             foreach ($this->body as $k => $v) {
                 $return[]= $k.'='.$v;
             }
-            return implode('&', $return);
-        } else {
-            return http_build_query($this->body);
+
+            return \implode('&', $return);
         }
+
+        return \http_build_query($this->body);
     }
 
+    /**
+     * @return string
+     */
     public function getMode()
     {
         return $this->mode;
     }
 
-    public function setMode($mode)
+    /**
+     * @param string $mode
+     */
+    public function setMode($mode): void
     {
         $this->mode = $mode;
     }
+
 }
